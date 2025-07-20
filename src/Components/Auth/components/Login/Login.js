@@ -8,11 +8,19 @@ import { useState } from "react";
 
 const cx = classNames.bind(style);
 
-function Login() {
+function Login({ className = "" }) {
     const [isLoading, setIsLoading] = useState(false);
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const isValid = username && password;
+    const [form, setForm] = useState({
+        username: "",
+        password: "",
+    });
+
+    // handle add variables
+    const handleOnAddVariables = ({ key = "", value = "" } = {}) => {
+        setForm((prev) => ({ ...prev, [key]: value }));
+    };
+    //  check variables
+    const isValid = Object.values(form).every((item) => item.trim() !== "");
     const handleOnSubmit = () => {
         setIsLoading(true);
         // call api
@@ -20,19 +28,21 @@ function Login() {
         setIsLoading(false);
     };
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper", { [className]: className })}>
             <div className={cx("container")}>
                 <BoxInput
                     id="username"
-                    title="Username"
+                    title="Username or Email"
                     isCheck={false}
-                    handleSetValue={setUsername}
+                    isRequired
+                    handleSetValue={handleOnAddVariables}
                 />
                 <BoxInput
                     id="password"
                     title="Mật khẩu"
                     isPassword
-                    handleSetValue={setPassword}
+                    isRequired
+                    handleSetValue={handleOnAddVariables}
                 />
                 <button className={cx("btn_forget")}>Quên mật khẩu?</button>
             </div>

@@ -2,17 +2,19 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { PublicRouters, UserRouters, AdminRouters } from "~/Routers";
 import renderRoute from "~/Routers/renderRoute";
 import { selectToasts } from "~/Features/Toast/toastSelect";
 import { removeToast } from "~/Features/Toast/toastSlice";
 import Auth from "~/Components/Auth";
+import { selectIsShowAuthModal } from "./Features/AuthModal/authModalSelect";
 
 function App() {
     const dispatch = useDispatch();
     const toasts = useSelector(selectToasts);
+    const isShowAuthModal = useSelector(selectIsShowAuthModal);
     useEffect(() => {
         const timers = [];
 
@@ -69,7 +71,7 @@ function App() {
                 pauseOnHover
                 // draggable = {}
             />
-            <Auth />
+            {isShowAuthModal && <Auth />}
         </Router>
     );
 }

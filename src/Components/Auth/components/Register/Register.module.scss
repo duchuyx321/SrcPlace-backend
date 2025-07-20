@@ -5,13 +5,11 @@
 .container {
     width: 100%;
 }
-.btn_forget {
-    font-size: 13px;
-    margin: 24px 16px 8px;
-    cursor: pointer;
-    &:hover {
-        text-decoration: underline;
-    }
+.name {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 24px;
 }
 .action {
     margin-top: 3rem;

@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import style from "./Header.module.scss";
 import Image from "~/Components/Image";
@@ -10,14 +11,19 @@ import Me from "~/Components/Me";
 import Search from "~/Components/Search";
 import { Link } from "react-router-dom";
 import config from "~/Config";
+import { openAuthModal } from "~/Features/AuthModal/authModalSlice";
 
 const cx = classNames.bind(style);
 function Header({ is_searchHeader = true }) {
     const [isLogin, setIsLogin] = useState(false);
+    const dispatch = useDispatch();
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
         // setIsLogin(!!AccessToken);
     }, []);
+    const handleOnOpenAuth = (isFormLogin) => {
+        dispatch(openAuthModal({ isFormLogin: isFormLogin }));
+    };
     return (
         <div className={cx("wrapper")}>
             <div className={cx("left")}>
@@ -39,10 +45,18 @@ function Header({ is_searchHeader = true }) {
                     </div>
                 ) : (
                     <>
-                        <Button className={cx("btn_login")} primary>
+                        <Button
+                            className={cx("btn_login")}
+                            primary
+                            onClick={() => handleOnOpenAuth(true)}
+                        >
                             Đăng nhập
                         </Button>
-                        <Button className={cx("btn_register")} primary>
+                        <Button
+                            className={cx("btn_register")}
+                            primary
+                            onClick={() => handleOnOpenAuth(false)}
+                        >
                             Đăng kí
                         </Button>
                     </>

@@ -16,6 +16,16 @@ const menuRegex = {
         /^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,20}$/,
     repeatPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,20}$/,
     email: /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/,
+    firstName: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
+    lastName: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
+};
+const menuWarning = {
+    username: "6–20 ký tự, chỉ chứa chữ cái, số và dấu gạch dưới!",
+    password:
+        "8–20 ký tự, không khoảng trắng, có ít nhất 1 chữ thường, 1 chữ in hoa, 1 số và 1 ký tự đặc biệt!",
+    email: "Sai định dạng email!",
+    firstName: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
+    lastName: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
 };
 
 const defaultFnc = () => {};
@@ -25,31 +35,32 @@ function BoxInput({
     title = "",
     isCheck = true,
     isPassword = false,
+    isRequired = false,
     handleSetValue = defaultFnc,
 }) {
     const [value, setValue] = useState("");
     const [check, setCheck] = useState("");
     const [isShowPass, setIsShowPass] = useState(isPassword);
-    const debounce = useDebounce(value, 1000);
+    const debounce = useDebounce(value, 1500);
     const dispatch = useDispatch();
     useEffect(() => {
         if (!debounce) {
             return;
         }
-        if (!menuRegex[id].test(debounce) && isCheck) {
+        if (isCheck && !menuRegex[id].test(debounce)) {
             setCheck("warning");
             dispatch(
                 addToast({
                     type: "warning",
-                    title: `${title} không hợp lệ!`,
+                    title: `${title} ${menuWarning[id]}`,
                     duration: 3000,
                 })
             );
-            handleSetValue("");
+            handleSetValue({ key: id, value: "" });
             return;
         }
         setCheck("success");
-        handleSetValue(debounce);
+        handleSetValue({ key: id, value: debounce });
     }, [debounce]);
     const handleOnInput = (e) => {
         setValue(e.target.value);
@@ -69,7 +80,10 @@ function BoxInput({
                     autoComplete="off"
                     onInput={(e) => handleOnInput(e)}
                 />
-                <label htmlFor={id}>{title}</label>
+                <label htmlFor={id}>
+                    {title}
+                    {isRequired && <span className={cx("isRequired")}>*</span>}
+                </label>
                 {isPassword && (
                     <button
                         className={cx("btn_eye")}
