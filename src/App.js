@@ -9,6 +9,7 @@ import renderRoute from "~/Routers/renderRoute";
 import { selectToasts } from "~/Features/Toast/toastSelect";
 import { removeToast } from "~/Features/Toast/toastSlice";
 import Auth from "~/Components/Auth";
+import EditAvatar from "~/Components/EditAvatar";
 import { selectIsShowAuthModal } from "./Features/AuthModal/authModalSelect";
 
 function App() {
@@ -71,7 +72,10 @@ function App() {
                 pauseOnHover
                 // draggable = {}
             />
-            {isShowAuthModal && <Auth />}
+            {/* login and register */}
+            {/* {isShowAuthModal && <Auth />} */}
+            {/* Avatar */}
+            {isShowAuthModal && <EditAvatar />}
         </Router>
     );
 }
