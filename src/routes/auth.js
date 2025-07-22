@@ -18,11 +18,7 @@ router.post(
     AuthController.sendCodeTOMail,
 );
 router.post('/login', AuthController.login);
-router.post(
-    '/register',
-    uploadCloudinary({ type: 'Avatar' }).single('file'),
-    AuthController.register,
-);
+router.post('/register', AuthController.register);
 router.post(
     '/refresh',
     JwtMiddleware.verifyRefreshToken,

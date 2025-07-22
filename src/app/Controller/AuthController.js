@@ -138,16 +138,11 @@ class AuthController {
     }
     // [POST] --/auth/register
     async register(req, res, next) {
-        const file = req.file;
         try {
             const { username, email, first_name, last_name } = req.body;
             const pass = req.body.password;
-            const image_url = file?.path || '';
-            const public_id = file?.filename;
+            console.log(req.body);
             if (!username || !pass || !email || !first_name || !last_name) {
-                if (file) {
-                    await CloudinaryService.deleteCloudinaryFile(file.filename);
-                }
                 return res.status(401).json({ error: 'missing data upload!' });
             }
             // kiểm tra các thông tin gửi lên
@@ -184,18 +179,12 @@ class AuthController {
             //  kiểm tra user or email đã tồn tại hay chưa
             const isUsername = await Users.findOne({ username });
             if (isUsername) {
-                if (file) {
-                    await CloudinaryService.deleteCloudinaryFile(file.filename);
-                }
                 return res
                     .status(400)
                     .json({ error: 'Username already exists.' });
             }
             const isEmail = await Users.findOne({ email });
             if (isEmail) {
-                if (file) {
-                    await CloudinaryService.deleteCloudinaryFile(file.filename);
-                }
                 return res.status(400).json({ error: 'Email already exists.' });
             }
             // hash pass
@@ -205,7 +194,6 @@ class AuthController {
                 username,
                 email,
                 password: hashPass,
-                avatar: { image_url, public_id },
                 first_name,
                 last_name,
             });
@@ -239,11 +227,18 @@ class AuthController {
                 device_ID,
                 role: newUser.role,
             };
+            const ip = req.ip;
+            const userAgent = req.headers['user-agent'];
+            // lưu địa chỉ an toàn
+            await AuthServices.addTrustedDevice({
+                user_ID: newUser._id,
+                device_ID,
+                ip,
+                userAgent,
+            });
             const AccessToken = await newAccessToken(profile);
             const RefreshToken = await newRefreshToken({ profile });
             await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
-            const ip = req.ip;
-            const userAgent = req.headers['user-agent'];
             // thêm cookie vào db
             await TokenService.addToken({
                 ip,
@@ -256,16 +251,6 @@ class AuthController {
             const { password, ...other } = newUser._doc;
             return res.status(200).json({ data: other, meta: { AccessToken } });
         } catch (error) {
-            //Kiểm tra lỗi dung lượng quá lớn
-            if (error.code === 'LIMIT_FILE_SIZE') {
-                return res
-                    .status(413)
-                    .json({ error: 'File too large. Max size is 2MB.' });
-            }
-            console.log(error);
-            if (file) {
-                await CloudinaryService.deleteCloudinaryFile(file.filename);
-            }
             return res.status(500).json({ error: error.message });
         }
     }
