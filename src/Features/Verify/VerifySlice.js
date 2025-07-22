@@ -13,11 +13,13 @@ const getInitialState = () => {
         }
     } catch {}
     return {
+        isVerifying: false,
         result: {
-            isVerifying: false,
-            email: null,
             isClose: false,
+            isShowListMethod: false,
+            email: null,
             title: null,
+            description: null,
         },
     };
 };
@@ -27,16 +29,20 @@ const verifySlice = createSlice({
     initialState: getInitialState(),
     reducers: {
         startVerifying: (state, action) => {
-            state.result.isVerifying = true;
+            state.isVerifying = true;
             state.result.email = action.payload?.email;
             state.result.isClose = action.payload?.isClose;
             state.result.title = action.payload?.title;
+            state.result.description = action.payload?.description;
+            state.result.isShowListMethod = action.payload?.isShowListMethod;
         },
         stopVerifying: (state) => {
-            state.result.isVerifying = false;
+            state.isVerifying = false;
             state.result.isClose = false;
+            state.result.isShowListMethod = false;
             state.result.email = null;
             state.result.title = null;
+            state.result.description = null;
         },
     },
 });

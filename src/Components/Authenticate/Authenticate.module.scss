@@ -27,6 +27,7 @@
     & > p {
         font-size: 13px;
         color: #33333391;
+        line-height: 1.5;
     }
 }
 .action {
@@ -36,6 +37,50 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.selectMethod {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+.otpInput {
+    margin-top: 24px;
+    & > p {
+        margin-bottom: 8px;
+    }
+}
+.method {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    & > button {
+        border-color: #f18b9b;
+        color: #f18b9b;
+        position: relative;
+        & > span {
+            position: absolute;
+            font-size: 13px;
+            right: 8px;
+            top: 8px;
+            color: #f18b9b;
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+}
+.btn_active {
+    &:focus > span {
+        transform: rotate(180deg);
+    }
+}
+.btn_method {
+    width: 10rem;
+    border: 1px solid #33333340;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1px;
 }
 @keyframes fadeOut {
     from {

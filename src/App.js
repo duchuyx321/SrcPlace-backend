@@ -11,14 +11,18 @@ import { removeToast } from "~/Features/Toast/toastSlice";
 import Auth from "~/Components/Auth";
 import EditAvatar from "~/Components/EditAvatar";
 import Authenticate from "~/Components/Authenticate";
-import { selectIsShowAuthModal } from "./Features/AuthModal/authModalSelect";
-import { selectIsShowAvatarModal } from "./Features/AvatarModal/AvatarModalSelect";
+import { selectIsShowAuthModal } from "~/Features/AuthModal/authModalSelect";
+import { selectIsShowAvatarModal } from "~/Features/AvatarModal/AvatarModalSelect";
+import { selectIsVerifying } from "~/Features/Verify/VerifySelect";
+import { selectResultVerify } from "~/Features/Verify/VerifySelect";
 
 function App() {
     const dispatch = useDispatch();
     const toasts = useSelector(selectToasts);
     const isShowAuthModal = useSelector(selectIsShowAuthModal);
     const isShowAvatarModal = useSelector(selectIsShowAvatarModal);
+    const isVerifying = useSelector(selectIsVerifying);
+    const resultVerify = useSelector(selectResultVerify);
     useEffect(() => {
         const timers = [];
 
@@ -76,11 +80,19 @@ function App() {
                 // draggable = {}
             />
             {/* login and register */}
-            {/* {isShowAuthModal && <Auth />} */}
+            {isShowAuthModal && <Auth />}
             {/* Avatar */}
             {isShowAvatarModal && <EditAvatar />}
             {/* Authenticate */}
-            {isShowAuthModal && <Authenticate />}
+            {isVerifying.isVerifying && (
+                <Authenticate
+                    title={resultVerify.title}
+                    description={resultVerify.description}
+                    isShowListMethod={resultVerify.isShowListMethod}
+                    email={resultVerify.email}
+                    isCloseModal={resultVerify.isClose}
+                />
+            )}
         </Router>
     );
 }
