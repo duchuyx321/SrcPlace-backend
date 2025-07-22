@@ -10,12 +10,15 @@ import { selectToasts } from "~/Features/Toast/toastSelect";
 import { removeToast } from "~/Features/Toast/toastSlice";
 import Auth from "~/Components/Auth";
 import EditAvatar from "~/Components/EditAvatar";
+import Authenticate from "~/Components/Authenticate";
 import { selectIsShowAuthModal } from "./Features/AuthModal/authModalSelect";
+import { selectIsShowAvatarModal } from "./Features/AvatarModal/AvatarModalSelect";
 
 function App() {
     const dispatch = useDispatch();
     const toasts = useSelector(selectToasts);
     const isShowAuthModal = useSelector(selectIsShowAuthModal);
+    const isShowAvatarModal = useSelector(selectIsShowAvatarModal);
     useEffect(() => {
         const timers = [];
 
@@ -75,7 +78,9 @@ function App() {
             {/* login and register */}
             {/* {isShowAuthModal && <Auth />} */}
             {/* Avatar */}
-            {isShowAuthModal && <EditAvatar />}
+            {isShowAvatarModal && <EditAvatar />}
+            {/* Authenticate */}
+            {isShowAuthModal && <Authenticate />}
         </Router>
     );
 }

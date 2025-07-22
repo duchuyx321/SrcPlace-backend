@@ -1,2 +1,2 @@
-export const selectIsShowAuthModal = (state) =>
+export const selectIsShowAvatarModal = (state) =>
     state.avatarModal.isShowAvatarModal;

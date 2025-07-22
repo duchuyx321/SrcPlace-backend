@@ -1,11 +1,14 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
 import { RiLoader2Line } from "react-icons/ri";
+import { useDispatch } from "react-redux";
 
 import style from "./Register.module.scss";
 import BoxInput from "../BoxInput";
 import Button from "~/Components/Button";
 import useRegisterVariables from "./useRegisterVariables";
+import AuthService from "~/Services/AuthService";
+import { adDataAuth } from "~/Features/Auth/AuthSlice";
 
 const cx = classNames.bind(style);
 
@@ -18,10 +21,13 @@ const MenuValid = [
 function Register({ className = "" }) {
     const [isLoading, setIsLoading] = useState(false);
     const { form, handleOnAddVariables, isValid } = useRegisterVariables();
-    const handleOnSubmit = () => {
+    const dispatch = useDispatch();
+    const handleOnSubmit = async () => {
         setIsLoading(true);
         // call api
-
+        const result = await AuthService.register({ form });
+        localStorage.setItem("AccessToken", result.AccessToken);
+        dispatch(adDataAuth({ user: result.data }));
         setIsLoading(false);
     };
     return (
@@ -29,13 +35,13 @@ function Register({ className = "" }) {
             <div className={cx("container")}>
                 <div className={cx("name")}>
                     <BoxInput
-                        id="firstName"
+                        id="first_name"
                         title="First Name"
                         handleSetValue={handleOnAddVariables}
                         isRequired
                     />
                     <BoxInput
-                        id="lastName"
+                        id="last_name"
                         title="Last Name"
                         handleSetValue={handleOnAddVariables}
                         isRequired

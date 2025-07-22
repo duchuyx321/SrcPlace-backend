@@ -16,16 +16,16 @@ const menuRegex = {
         /^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,20}$/,
     repeatPassword: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,20}$/,
     email: /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/,
-    firstName: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
-    lastName: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
+    first_name: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
+    last_name: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
 };
 const menuWarning = {
     username: "6–20 ký tự, chỉ chứa chữ cái, số và dấu gạch dưới!",
     password:
         "8–20 ký tự, không khoảng trắng, có ít nhất 1 chữ thường, 1 chữ in hoa, 1 số và 1 ký tự đặc biệt!",
     email: "Sai định dạng email!",
-    firstName: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
-    lastName: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
+    first_name: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
+    last_name: "2–15 ký tự, bao gồm chữ có dấu, khoảng trắng,",
 };
 
 const defaultFnc = () => {};
@@ -60,7 +60,7 @@ function BoxInput({
             return;
         }
         setCheck("success");
-        handleSetValue({ key: id, value: debounce });
+        handleSetValue({ key: id, value: debounce.trim() });
     }, [debounce]);
     const handleOnInput = (e) => {
         setValue(e.target.value);

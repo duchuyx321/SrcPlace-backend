@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { FaLaptopHouse } from "react-icons/fa";
 
-const init = { isShowAvatarModal: FaLaptopHouse };
+const init = { isShowAvatarModal: false };
 
 const AvatarModalSlice = createSlice({
     name: "avatarModal",

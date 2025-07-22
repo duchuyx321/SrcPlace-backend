@@ -68,6 +68,19 @@ input {
 .tippy-box[data-theme~="facebook"] > .tippy-arrow::before {
     color: #1877f2; /* Đổi màu mũi tên */
 }
+@mixin modalWrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 103;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    overflow: hidden;
+}
 // responsive
 
 // mobile < 740px

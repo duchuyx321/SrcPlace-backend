@@ -2,8 +2,8 @@ import { useState } from "react";
 
 const useRegisterVariables = () => {
     const [form, setForm] = useState({
-        firstName: "",
-        lastName: "",
+        first_name: "",
+        last_name: "",
         email: "",
         username: "",
         password: "",
