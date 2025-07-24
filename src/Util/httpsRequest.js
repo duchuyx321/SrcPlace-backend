@@ -9,8 +9,10 @@ httpRequest.interceptors.request.use(
     (config) => {
         // thêm token trước khi gửi lên
         const token = localStorage.getItem("AccessToken");
-        if (token) {
-            config.headers.Authorization = token;
+        const TempToken = localStorage.getItem("TempToken");
+        const finalToken = token || TempToken;
+        if (finalToken) {
+            config.headers.Authorization = finalToken;
         }
         return config;
     },

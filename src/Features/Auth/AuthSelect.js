@@ -1,1 +1,2 @@
-export const selectDataUserAuth = (state) => state.authReducer.user;
+export const selectDataUserAuth = (state) => state.auth.user;
+export const selectIsLoginAuth = (state) => state.auth.isLogin;

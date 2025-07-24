@@ -15,6 +15,7 @@ import { selectIsShowAuthModal } from "~/Features/AuthModal/authModalSelect";
 import { selectIsShowAvatarModal } from "~/Features/AvatarModal/AvatarModalSelect";
 import { selectIsVerifying } from "~/Features/Verify/VerifySelect";
 import { selectResultVerify } from "~/Features/Verify/VerifySelect";
+import { rehydrateVerify } from "~/Features/Verify/VerifySlice";
 
 function App() {
     const dispatch = useDispatch();
@@ -42,6 +43,16 @@ function App() {
             timers.forEach((timer) => clearTimeout(timer));
         };
     }, [dispatch, toasts]);
+    useEffect(() => {
+        try {
+            const saved = sessionStorage.getItem("authVerify");
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                dispatch(rehydrateVerify(parsed)); // khôi phục lại redux và "kích hoạt render"
+            }
+            // call api lấy thông người dùng
+        } catch {}
+    }, []);
     return (
         <Router>
             <Routes>
@@ -84,7 +95,7 @@ function App() {
             {/* Avatar */}
             {isShowAvatarModal && <EditAvatar />}
             {/* Authenticate */}
-            {isVerifying.isVerifying && (
+            {isVerifying && (
                 <Authenticate
                     title={resultVerify.title}
                     description={resultVerify.description}

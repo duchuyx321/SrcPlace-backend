@@ -8,7 +8,6 @@ const useRegisterVariables = () => {
         username: "",
         password: "",
     });
-
     // handle add variables
     const handleOnAddVariables = ({ key = "", value = "" } = {}) => {
         setForm((prev) => ({ ...prev, [key]: value }));

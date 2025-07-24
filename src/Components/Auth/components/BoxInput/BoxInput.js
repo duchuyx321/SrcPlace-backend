@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -37,12 +37,20 @@ function BoxInput({
     isPassword = false,
     isRequired = false,
     handleSetValue = defaultFnc,
+    isError = false,
 }) {
     const [value, setValue] = useState("");
     const [check, setCheck] = useState("");
     const [isShowPass, setIsShowPass] = useState(isPassword);
-    const debounce = useDebounce(value, 1500);
+    const debounce = useDebounce(value, 800);
     const dispatch = useDispatch();
+    const inputRef = useRef();
+    useEffect(() => {
+        if (isError && inputRef.current) {
+            inputRef.current.focus();
+            setCheck("error");
+        }
+    }, [isError]);
     useEffect(() => {
         if (!debounce) {
             return;
@@ -70,8 +78,11 @@ function BoxInput({
     };
     return (
         <div className={cx("wrapper")}>
-            <div className={cx("box_input", { [check]: check })}>
+            <div
+                className={cx("box_input", { [check]: check, error: isError })}
+            >
                 <input
+                    ref={inputRef}
                     value={value}
                     type={isShowPass ? "password" : "text"}
                     id={id}

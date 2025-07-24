@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const init = { user: {} };
+const init = { user: {}, isLogin: false };
 
 const authSlice = createSlice({
     name: "auth",
@@ -10,6 +10,7 @@ const authSlice = createSlice({
         adDataAuth(state, action) {
             state.user = action.payload.user || {};
             // thêm các thông tin bên dưới
+            state.isLogin = true;
         },
         // edit data auth
         editDataAuth(state, action) {
@@ -23,6 +24,7 @@ const authSlice = createSlice({
         //  logout => clear data
         clearDataAuth(state) {
             state.user = init.user;
+            state.isLogin = init.isLogin;
         },
     },
 });

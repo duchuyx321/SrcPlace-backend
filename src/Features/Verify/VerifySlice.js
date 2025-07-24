@@ -30,21 +30,23 @@ const verifySlice = createSlice({
     reducers: {
         startVerifying: (state, action) => {
             state.isVerifying = true;
-            state.result.email = action.payload?.email;
-            state.result.isClose = action.payload?.isClose;
-            state.result.title = action.payload?.title;
-            state.result.description = action.payload?.description;
-            state.result.isShowListMethod = action.payload?.isShowListMethod;
+            state.result = { ...state.result, ...action.payload };
         },
         stopVerifying: (state) => {
             state.isVerifying = false;
-            state.result.isClose = false;
-            state.result.isShowListMethod = false;
-            state.result.email = null;
-            state.result.title = null;
-            state.result.description = null;
+            state.result = {
+                isClose: false,
+                isShowListMethod: false,
+                email: null,
+                title: null,
+                description: null,
+            };
+        },
+        rehydrateVerify: (state, action) => {
+            return action.payload; // restore toàn bộ state từ sessionStorage
         },
     },
 });
-export const { startVerifying, stopVerifying } = verifySlice.actions;
+export const { startVerifying, stopVerifying, rehydrateVerify } =
+    verifySlice.actions;
 export default verifySlice.reducer;

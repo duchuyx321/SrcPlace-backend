@@ -9,7 +9,7 @@
 }
 .container {
     width: 340px;
-    height: 340px;
+    min-height: 390px;
     background-color: var(--white-color);
     position: relative;
     padding: 24px 24px 8px;
@@ -36,7 +36,7 @@
     bottom: 8px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
 }
 .selectMethod {
     display: flex;
@@ -81,6 +81,19 @@
     align-items: center;
     justify-content: center;
     border-radius: 1px;
+}
+.action_out {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.btn_submit {
+    width: 100%;
+}
+.btn_resendCode {
+    width: 100%;
 }
 @keyframes fadeOut {
     from {

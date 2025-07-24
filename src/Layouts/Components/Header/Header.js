@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import style from "./Header.module.scss";
 import Image from "~/Components/Image";
@@ -12,11 +12,13 @@ import Search from "~/Components/Search";
 import { Link } from "react-router-dom";
 import config from "~/Config";
 import { openAuthModal } from "~/Features/AuthModal/authModalSlice";
+import { selectIsLoginAuth } from "~/Features/Auth/AuthSelect";
 
 const cx = classNames.bind(style);
 function Header({ is_searchHeader = true }) {
-    const [isLogin, setIsLogin] = useState(false);
     const dispatch = useDispatch();
+    const isLogin = useSelector(selectIsLoginAuth);
+    // useEffect;
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
         // setIsLogin(!!AccessToken);
