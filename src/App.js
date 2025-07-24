@@ -1,84 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
-import { PublicRouters, UserRouters, AdminRouters } from "~/Routers";
-import renderRoute from "~/Routers/renderRoute";
-import { selectToasts } from "~/Features/Toast/toastSelect";
-import { removeToast } from "~/Features/Toast/toastSlice";
-import Auth from "~/Components/Auth";
-import EditAvatar from "~/Components/EditAvatar";
-import Authenticate from "~/Components/Authenticate";
-import { selectIsShowAuthModal } from "~/Features/AuthModal/authModalSelect";
-import { selectIsShowAvatarModal } from "~/Features/AvatarModal/AvatarModalSelect";
-import { selectIsVerifying } from "~/Features/Verify/VerifySelect";
-import { selectResultVerify } from "~/Features/Verify/VerifySelect";
-import { rehydrateVerify } from "~/Features/Verify/VerifySlice";
+import AppRouter from "~/AppRouter";
+import { useInitUserAuth, useToastDuration } from "~/Hooks";
+import ModalLayer from "~/Layouts/ModalLayer/ModalLayer";
 
 function App() {
-    const dispatch = useDispatch();
-    const toasts = useSelector(selectToasts);
-    const isShowAuthModal = useSelector(selectIsShowAuthModal);
-    const isShowAvatarModal = useSelector(selectIsShowAvatarModal);
-    const isVerifying = useSelector(selectIsVerifying);
-    const resultVerify = useSelector(selectResultVerify);
-    useEffect(() => {
-        const timers = [];
-
-        toasts.forEach((item) => {
-            if (!item.title) return;
-
-            toast[item.type](item.title, { autoClose: item.duration || 3000 });
-
-            const timer = setTimeout(() => {
-                dispatch(removeToast({ id: item.id }));
-            }, item.duration || 3000);
-
-            timers.push(timer);
-        });
-
-        return () => {
-            timers.forEach((timer) => clearTimeout(timer));
-        };
-    }, [dispatch, toasts]);
-    useEffect(() => {
-        try {
-            const saved = sessionStorage.getItem("authVerify");
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                dispatch(rehydrateVerify(parsed)); // khôi phục lại redux và "kích hoạt render"
-            }
-            // call api lấy thông người dùng
-        } catch {}
-    }, []);
+    useInitUserAuth();
+    useToastDuration();
     return (
         <Router>
-            <Routes>
-                {/* Router Admin */}
-                {AdminRouters.map((routes, index) =>
-                    renderRoute({
-                        Route: Route,
-                        data: routes,
-                        role: "Admin",
-                        index: index,
-                    })
-                )}
-                {/* Router User */}
-                {UserRouters.map((routes, index) =>
-                    renderRoute({
-                        Route: Route,
-                        data: routes,
-                        role: "User",
-                        index: index,
-                    })
-                )}
-                {/* Router Public */}
-                {PublicRouters.map((routes, index) =>
-                    renderRoute({ Route: Route, data: routes, index: index })
-                )}
-            </Routes>
+            {/* router */}
+            <AppRouter />
             {/* add model toast message */}
             {/* toast */}
             <ToastContainer
@@ -90,20 +24,8 @@ function App() {
                 pauseOnHover
                 // draggable = {}
             />
-            {/* login and register */}
-            {isShowAuthModal && <Auth />}
-            {/* Avatar */}
-            {isShowAvatarModal && <EditAvatar />}
-            {/* Authenticate */}
-            {isVerifying && (
-                <Authenticate
-                    title={resultVerify.title}
-                    description={resultVerify.description}
-                    isShowListMethod={resultVerify.isShowListMethod}
-                    email={resultVerify.email}
-                    isCloseModal={resultVerify.isClose}
-                />
-            )}
+            {/* modal custom */}
+            <ModalLayer />
         </Router>
     );
 }

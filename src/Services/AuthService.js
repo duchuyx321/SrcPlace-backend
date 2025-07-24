@@ -1,5 +1,8 @@
-import * as httpRequest from "~/Util/httpsRequest";
+import store from "~/App/store";
 
+import * as httpRequest from "~/Util/httpsRequest";
+import { clearDataAuth } from "~/Features/Auth/AuthSlice";
+import { clearCart } from "~/Features/Cart/cartSlice";
 const ERROR_MESSAGES_VI = {
     "Username already exists.": {
         key: "username",
@@ -62,6 +65,31 @@ class AuthService {
             return result;
         } catch (error) {
             return { error: error.message };
+        }
+    }
+    // refresh token
+    async refreshToken() {
+        try {
+            const result = await httpRequest.POST("auth/refresh");
+            // thêm vào local
+            const newAccessToken = result.data?.meta?.AccessToken;
+            if (!newAccessToken) {
+                throw new Error("Không lấy được token mới!");
+            }
+            localStorage.setItem("AccessToken", newAccessToken);
+            return newAccessToken;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    async logout() {
+        try {
+            await httpRequest.POST("auth/logout");
+            localStorage.removeItem("AccessToken");
+            store.dispatch(clearDataAuth());
+            store.dispatch(clearCart());
+        } catch (error) {
+            console.error("Logout API error:", error);
         }
     }
 }
