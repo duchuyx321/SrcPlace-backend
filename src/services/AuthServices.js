@@ -11,14 +11,18 @@ class AuthServices {
         ip = '',
         userAgent = '',
     } = {}) {
-        const otherSession = await TokenSession.findOne({ user_ID });
-        const authentication = await TwoFactorAuth.findOne({ user_ID });
+        const otherSession = await TokenSession.findOne({ user_ID }).select(
+            'device_ID',
+        );
+        const authentication = await TwoFactorAuth.findOne({ user_ID }).select(
+            'is_enabled is_verified',
+        );
         const trustedDevice = await TrustedDevices.findOne({
             user_ID,
             device_ID,
             ip,
             userAgent,
-        });
+        }).select('');
         const isSameDevice = otherSession?.device_ID === device_ID;
         return {
             is_session: (!!otherSession && !isSameDevice) || false,

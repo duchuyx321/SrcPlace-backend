@@ -98,6 +98,8 @@ class AuthController {
                     token: RefreshToken?.split(' ')[1],
                 });
                 meta = { ...meta, AccessToken };
+                const { password, ...other } = user._doc;
+                return res.status(200).json({ data: other, meta });
             } else {
                 const TempToken = await newTempToken(profile);
                 meta = { ...meta, TempToken };
@@ -129,8 +131,8 @@ class AuthController {
                     }
                 }
             }
-            const { password, ...other } = user._doc;
-            return res.status(200).json({ data: other, meta });
+
+            return res.status(200).json({ data: { meta } });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ error: error.message });
@@ -236,20 +238,9 @@ class AuthController {
                 ip,
                 userAgent,
             });
-            const AccessToken = await newAccessToken(profile);
-            const RefreshToken = await newRefreshToken({ profile });
-            await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
-            // thêm cookie vào db
-            await TokenService.addToken({
-                ip,
-                device_ID,
-                userAgent,
-                user_ID: newUser._id,
-                token: RefreshToken?.split(' ')[1],
-            });
+            const TempToken = await newTempToken(profile);
             // trả về dữ liệu
-            const { password, ...other } = newUser._doc;
-            return res.status(200).json({ data: other, meta: { AccessToken } });
+            return res.status(200).json({ data: { meta: { TempToken } } });
         } catch (error) {
             return res.status(500).json({ error: error.message });
         }
@@ -304,7 +295,7 @@ class AuthController {
     async PrevLoginCheck(req, res, next) {
         try {
             const { user_ID, device_ID, role } = req.user;
-            const { type, code } = req.body; // type: App || email'
+            const { type, code, action } = req.body; // type: App || email', action: register || login
             if (type === 'email') {
                 const checkVerifyCodes =
                     await VerifyCodesServices.CheckVerifyCodes({
@@ -312,11 +303,19 @@ class AuthController {
                         device_ID,
                         code,
                     });
-
                 if (checkVerifyCodes.status !== 200) {
                     return res
                         .status(checkVerifyCodes.status)
                         .json({ error: checkVerifyCodes.message });
+                }
+                if (action === 'register') {
+                    const verifyUser = await Users.updateOne(
+                        { _id: user_ID },
+                        { $set: { is_verified: true } },
+                    );
+                    if (verifyUser.modifiedCount === 0) {
+                        return res.status(501).json({ error: error.message });
+                    }
                 }
             } else {
                 // check auth
@@ -346,7 +345,9 @@ class AuthController {
                 user_ID,
                 token: RefreshToken?.split(' ')[1],
             });
-            return res.status(200).json({ data: { meta: { AccessToken } } });
+            const user = await Users.findById(user_ID);
+            const { password, ...other } = user._doc;
+            return res.status(200).json({ data: other, meta: { AccessToken } });
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });

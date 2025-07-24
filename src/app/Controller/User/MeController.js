@@ -17,7 +17,7 @@ class UserController {
     async getMyProfile(req, res, next) {
         try {
             const { user_ID } = req.user;
-            const [user, wallet] = Promise.all([
+            const [user, wallet] = await Promise.all([
                 Users.findOne({ _id: user_ID }),
                 Wallet.findOne({ user_ID }),
             ]);
@@ -136,22 +136,11 @@ class UserController {
     }
     // [PATCH] --/user/me
     async updateMyProfile(req, nes, next) {
-        const file = req.file;
         try {
-            let { public_id, ...updates } = req.body;
+            let { ...updates } = req.body;
             const { user_ID } = req.user;
             if (!updates) {
-                if (file) {
-                    await CloudinaryService.deleteCloudinaryFile(file.filename);
-                }
                 return res.status(403).json({ error: 'no data to upload!' });
-            }
-            if (file?.path) {
-                updates.avatar = {
-                    image_url: file.path,
-                    public_id: file.filename,
-                };
-                await CloudinaryService.deleteCloudinaryFile(public_id);
             }
             const result = await Users.updateOne(
                 { _id: user_ID },
@@ -201,6 +190,51 @@ class UserController {
                 .json({ message: 'change password successfully.' });
         } catch (error) {
             console.log(error);
+            return res.status(501).json({ error: error.message });
+        }
+    }
+    async updateAvatar(res, req, next) {
+        const file = req.file;
+        try {
+            const { user_ID } = req.user;
+            const avatarUser = await Users.findById(user_ID).select('avatar');
+            if (!avatarUser) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res.status(404).json({ error: 'User does not exist!' });
+            }
+            if (avatarUser.avatar?.public_id) {
+                await CloudinaryService.deleteCloudinaryFile(
+                    avatarUser.avatar?.public_id,
+                );
+            }
+            const updateAvatarCurrent = await Users.updateOne(
+                { _id: user_ID },
+                {
+                    $set: {
+                        avatar: {
+                            image_url: file?.path || '',
+                            public_id: file?.filename || '',
+                        },
+                    },
+                },
+            );
+            if (updateAvatarCurrent.modifiedCount === 0) {
+                if (file) {
+                    await CloudinaryService.deleteCloudinaryFile(file.filename);
+                }
+                return res
+                    .status(200)
+                    .json({ message: 'update avatar is false!' });
+            }
+            return res
+                .status(200)
+                .json({ message: 'avatar updated successfully.' });
+        } catch (error) {
+            if (file) {
+                await CloudinaryService.deleteCloudinaryFile(file.filename);
+            }
             return res.status(501).json({ error: error.message });
         }
     }

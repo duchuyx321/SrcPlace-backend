@@ -24,6 +24,7 @@ const UsersSchema = new Schema(
         first_name: { type: String, minlength: 1, maxlength: 30 },
         last_name: { type: String, minlength: 1, maxlength: 30 },
         is_blocked: { type: Boolean, default: false },
+        is_verified: { type: Boolean, default: false },
     },
     { timestamps: true, collection: 'Users' },
 );

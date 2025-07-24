@@ -9,7 +9,7 @@ class CloudinaryService {
                 message: 'delete successful!',
             };
         } catch (error) {
-            console.log(error);
+            throw new Error(error.message);
         }
     }
 }
