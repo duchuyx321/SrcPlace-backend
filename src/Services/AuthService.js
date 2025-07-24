@@ -9,7 +9,14 @@ const ERROR_MESSAGES_VI = {
         message: "Tên người dùng đã tồn tại",
     },
     "Email already exists.": { key: "email", message: "Email đã tồn tại" },
-    // ... thêm các lỗi khác tương ứng
+    "wrong username or email!": {
+        key: "usernameOrEmail",
+        message: "username or email không chính sác!",
+    },
+    "user is blocked": {
+        key: "usernameOrEmail",
+        message: "username or email không chính sác!",
+    },
     DEFAULT: {
         key: "default",
         message: "Đã xảy ra lỗi, vui lòng thử lại sau.",
@@ -18,18 +25,20 @@ const ERROR_MESSAGES_VI = {
 
 class AuthService {
     // login
-    async login({ username, password }) {
+    async login({ usernameOrEmail, password }) {
         try {
-            const result = await httpRequest.POST("auth/register", {
-                body: {
-                    username,
-                    password,
-                },
+            const result = await httpRequest.POST("auth/login", {
+                usernameOrEmail,
+                password,
             });
             console.log(result);
             return result.data;
         } catch (error) {
-            return { error: error.message };
+            console.log(error);
+            const errMsg = error?.response?.data?.error || "";
+            const message =
+                ERROR_MESSAGES_VI[errMsg] || ERROR_MESSAGES_VI.DEFAULT;
+            return { error: message };
         }
     }
     // register

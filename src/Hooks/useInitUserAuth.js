@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { rehydrateVerify } from "~/Features/Verify/VerifySlice";
 import MeService from "~/Services/MeService";
-import { adDataAuth } from "~/Features/Auth/AuthSlice";
+import { adDataAuth, updateAuthStatus } from "~/Features/Auth/AuthSlice";
 
 function useInitUserAuth() {
     const dispatch = useDispatch();
@@ -19,10 +19,15 @@ function useInitUserAuth() {
     };
     useEffect(() => {
         try {
-            const saved = sessionStorage.getItem("authVerify");
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                dispatch(rehydrateVerify(parsed)); // khôi phục lại redux và "kích hoạt render"
+            const savedAuthVerify = sessionStorage.getItem("authVerify");
+            const savedAuthStatus = sessionStorage.getItem("authStatus");
+            if (savedAuthVerify) {
+                const parsedAuthVerify = JSON.parse(savedAuthVerify);
+                dispatch(rehydrateVerify(parsedAuthVerify)); // khôi phục lại redux và "kích hoạt render"
+            }
+            if (savedAuthStatus) {
+                const parsedAuthStatus = JSON.parse(savedAuthStatus);
+                dispatch(updateAuthStatus(parsedAuthStatus));
             }
             // call api lấy thông người dùng
             if (localStorage.getItem("AccessToken")) {

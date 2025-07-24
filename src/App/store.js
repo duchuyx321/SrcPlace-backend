@@ -31,7 +31,9 @@ store.subscribe(() => {
     timeout = setTimeout(() => {
         try {
             const state = store.getState().verify;
+            const authStatus = store.getState().auth.authStatus;
             sessionStorage.setItem("authVerify", JSON.stringify(state));
+            sessionStorage.setItem("authStatus", JSON.stringify(authStatus));
         } catch {}
     }, 300); // Chờ 300ms mới lưu, tránh spam ghi
 });

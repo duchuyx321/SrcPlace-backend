@@ -32,8 +32,7 @@
 .menuItem {
     width: 100%;
     margin-top: 12px;
-    &a,
-    button {
+    & > .item {
         color: var(--black-color);
     }
 }
@@ -41,7 +40,6 @@
     width: 100%;
     padding: 12px;
     border-bottom: 1px solid #c5c5c55e;
-    color: var(--black-color);
 }
 .item_wrapper {
     width: 100%;

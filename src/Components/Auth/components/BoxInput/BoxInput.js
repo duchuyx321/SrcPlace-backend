@@ -11,6 +11,7 @@ import { useDebounce } from "~/Hooks";
 const cx = classNames.bind(style);
 
 const menuRegex = {
+    usernameOrEmail: /^.{6,}$/,
     username: /^[a-zA-Z0-9_]{6,20}$/,
     password:
         /^(?=\S+$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,20}$/,
@@ -20,6 +21,7 @@ const menuRegex = {
     last_name: /^[a-zA-ZÀ-ỹ\s'-]{2,15}$/,
 };
 const menuWarning = {
+    usernameOrEmail: "Phải từ 6 ký tự trở lên!",
     username: "6–20 ký tự, chỉ chứa chữ cái, số và dấu gạch dưới!",
     password:
         "8–20 ký tự, không khoảng trắng, có ít nhất 1 chữ thường, 1 chữ in hoa, 1 số và 1 ký tự đặc biệt!",
