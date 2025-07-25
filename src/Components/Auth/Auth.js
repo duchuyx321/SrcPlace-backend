@@ -55,6 +55,7 @@ function Auth() {
                                     open: isOpenAnimation,
                                     close: !isOpenAnimation,
                                 })}
+                                handleOnclose={handleOnClose}
                             />
                         ) : (
                             <Register

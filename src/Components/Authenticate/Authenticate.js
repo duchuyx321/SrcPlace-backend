@@ -10,7 +10,6 @@ import Button from "~/Components/Button";
 import OTPInput from "./OTPInput";
 import AuthService from "~/Services/AuthService";
 import { addToast } from "~/Features/Toast/toastSlice";
-import { openAvatarModal } from "~/Features/AvatarModal/AvatarModalSlice";
 import { stopVerifying } from "~/Features/Verify/VerifySlice";
 import { adDataAuth } from "~/Features/Auth/AuthSlice";
 import { closeAuthModal } from "~/Features/AuthModal/authModalSlice";
@@ -98,7 +97,6 @@ function Authenticate({
             action: "register",
             type,
         });
-        console.log(result);
         if (result.error) {
             dispatch(
                 addToast({

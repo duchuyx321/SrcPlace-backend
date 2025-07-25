@@ -6,6 +6,7 @@ import authModalReducer from "~/Features/AuthModal/authModalSlice";
 import avatarModalReducer from "~/Features/AvatarModal/AvatarModalSlice";
 import authReducer from "~/Features/Auth/AuthSlice";
 import verifyReducer from "~/Features/Verify/VerifySlice";
+import modalReducer from "~/Features/Modal/modalSlice";
 
 const store = configureStore({
     reducer: {
@@ -23,6 +24,8 @@ const store = configureStore({
         avatarModal: avatarModalReducer,
         // verify
         verify: verifyReducer,
+        // modal
+        modal: modalReducer,
     },
 });
 let timeout;

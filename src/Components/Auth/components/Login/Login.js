@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import { useState } from "react";
 import { RiLoader2Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
 import style from "./Login.module.scss";
 import BoxInput from "../BoxInput";
@@ -11,8 +12,9 @@ import { addToast } from "~/Features/Toast/toastSlice";
 import { adDataAuth, updateAuthStatus } from "~/Features/Auth/AuthSlice";
 
 const cx = classNames.bind(style);
+const defaultFnc = () => {};
 
-function Login({ className = "" }) {
+function Login({ className = "", handleOnclose = defaultFnc }) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorKey, setErrorKey] = useState("");
     const [form, setForm] = useState({
@@ -22,7 +24,9 @@ function Login({ className = "" }) {
     const dispatch = useDispatch();
     // handle add variables
     const handleOnAddVariables = ({ key = "", value = "" } = {}) => {
+        if (!(key in form)) return;
         setForm((prev) => ({ ...prev, [key]: value }));
+        if (errorKey === key) setErrorKey("");
     };
     //  check variables
     const isValid = Object.values(form).every((item) => item.trim() !== "");
@@ -41,6 +45,7 @@ function Login({ className = "" }) {
                 // thêm authStatus
                 dispatch(
                     updateAuthStatus({
+                        isInitialized: true,
                         isSession: meta?.is_session,
                         isEnabled2FA: meta?.is_enabled2fa,
                         isTrustDevices: meta?.is_trustDevices,
@@ -49,12 +54,22 @@ function Login({ className = "" }) {
                 );
                 return;
             }
+            // hiển thị thông báo đăng nhập thành công
+            dispatch(
+                addToast({
+                    type: "success",
+                    title: "Đăng nhập thành công!",
+                    duration: 3000,
+                })
+            );
             // thêm thông tin người dùng khi đúng
             dispatch(
                 adDataAuth({
                     user: resultLogin.data,
                 })
             );
+            // Tắt auth
+            handleOnclose();
         } catch (err) {
             dispatch(
                 addToast({
@@ -63,7 +78,7 @@ function Login({ className = "" }) {
                     duration: 3000,
                 })
             );
-            setErrorKey(err.error.key);
+            setErrorKey(err.error.key || "");
             handleOnAddVariables({ key: err.error?.key, value: "" });
         } finally {
             setIsLoading(false);
@@ -108,5 +123,8 @@ function Login({ className = "" }) {
         </div>
     );
 }
-
+Login.propTypes = {
+    className: PropTypes.string,
+    handleOnclose: PropTypes.func,
+};
 export default Login;

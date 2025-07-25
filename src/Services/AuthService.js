@@ -3,25 +3,7 @@ import store from "~/App/store";
 import * as httpRequest from "~/Util/httpsRequest";
 import { clearDataAuth } from "~/Features/Auth/AuthSlice";
 import { clearCart } from "~/Features/Cart/cartSlice";
-const ERROR_MESSAGES_VI = {
-    "Username already exists.": {
-        key: "username",
-        message: "Tên người dùng đã tồn tại",
-    },
-    "Email already exists.": { key: "email", message: "Email đã tồn tại" },
-    "wrong username or email!": {
-        key: "usernameOrEmail",
-        message: "username or email không chính sác!",
-    },
-    "user is blocked": {
-        key: "usernameOrEmail",
-        message: "username or email không chính sác!",
-    },
-    DEFAULT: {
-        key: "default",
-        message: "Đã xảy ra lỗi, vui lòng thử lại sau.",
-    },
-};
+import { ERROR_MESSAGES_VI } from "~/Util/constants/errorMessages";
 
 class AuthService {
     // login
@@ -91,14 +73,28 @@ class AuthService {
             throw new Error(error);
         }
     }
+    // logout
     async logout() {
         try {
             await httpRequest.POST("auth/logout");
             localStorage.removeItem("AccessToken");
+            localStorage.removeItem("TempToken");
             store.dispatch(clearDataAuth());
             store.dispatch(clearCart());
         } catch (error) {
             console.error("Logout API error:", error);
+        }
+    }
+    // check auth status
+    async checkResumeSession() {
+        try {
+            const result = await httpRequest.POST("auth/session/resume");
+            return result;
+        } catch (error) {
+            const errMsg = error?.response?.data?.error || "";
+            const message =
+                ERROR_MESSAGES_VI[errMsg] || ERROR_MESSAGES_VI.DEFAULT;
+            return { error: message };
         }
     }
 }
