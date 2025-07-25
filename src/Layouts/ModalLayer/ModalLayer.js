@@ -6,16 +6,18 @@ import {
     selectIsVerifying,
     selectResultVerify,
 } from "~/Features/Verify/VerifySelect";
+import { selectIsShowModal } from "~/Features/Modal/modalSelect";
 import Auth from "~/Components/Auth";
+import Modal from "~/Components/Modal";
 import EditAvatar from "~/Components/EditAvatar";
 import Authenticate from "~/Components/Authenticate";
 
 function ModalLayer() {
+    const resultVerify = useSelector(selectResultVerify);
     const isShowAuthModal = useSelector(selectIsShowAuthModal);
     const isShowAvatarModal = useSelector(selectIsShowAvatarModal);
     const isVerifying = useSelector(selectIsVerifying);
-    const resultVerify = useSelector(selectResultVerify);
-
+    const isShowModal = useSelector(selectIsShowModal);
     return (
         <>
             {/* login and register */}
@@ -32,6 +34,8 @@ function ModalLayer() {
                     isCloseModal={resultVerify.isClose}
                 />
             )}
+            {/* modal */}
+            {isShowModal && <Modal />}
         </>
     );
 }

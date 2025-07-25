@@ -32,57 +32,59 @@ function Login({ className = "", handleOnclose = defaultFnc }) {
     const isValid = Object.values(form).every((item) => item.trim() !== "");
     const handleOnSubmit = async () => {
         setIsLoading(true);
-        try {
-            // call api
-            const resultLogin = await AuthService.login({
-                usernameOrEmail: form.usernameOrEmail,
-                password: form.password,
-            });
-            const TempToken = resultLogin.meta?.TempToken;
-            if (TempToken) {
-                const meta = resultLogin.meta;
-                localStorage.setItem("TempToken", TempToken);
-                // thêm authStatus
-                dispatch(
-                    updateAuthStatus({
-                        isInitialized: true,
-                        isSession: meta?.is_session,
-                        isEnabled2FA: meta?.is_enabled2fa,
-                        isTrustDevices: meta?.is_trustDevices,
-                        isVerify2FA: meta?.is_verify2fa,
-                    })
-                );
-                return;
-            }
-            // hiển thị thông báo đăng nhập thành công
-            dispatch(
-                addToast({
-                    type: "success",
-                    title: "Đăng nhập thành công!",
-                    duration: 3000,
-                })
-            );
-            // thêm thông tin người dùng khi đúng
-            dispatch(
-                adDataAuth({
-                    user: resultLogin.data,
-                })
-            );
-            // Tắt auth
-            handleOnclose();
-        } catch (err) {
+        // call api
+        const resultLogin = await AuthService.login({
+            usernameOrEmail: form.usernameOrEmail,
+            password: form.password,
+        });
+        if (resultLogin.error) {
             dispatch(
                 addToast({
                     type: "error",
-                    title: err.error.message,
+                    title: resultLogin.error?.message || "",
                     duration: 3000,
                 })
             );
-            setErrorKey(err.error.key || "");
-            handleOnAddVariables({ key: err.error?.key, value: "" });
-        } finally {
+            setErrorKey(resultLogin.error?.key || "");
+            handleOnAddVariables({ key: resultLogin.error?.key, value: "" });
             setIsLoading(false);
+            return;
         }
+        const TempToken = resultLogin.meta?.TempToken;
+        console.log(TempToken);
+        if (TempToken) {
+            const meta = resultLogin.meta;
+            localStorage.setItem("TempToken", TempToken);
+            // thêm authStatus
+            dispatch(
+                updateAuthStatus({
+                    isInitialized: true,
+                    isSession: meta?.is_session,
+                    isEnabled2FA: meta?.is_enabled2fa,
+                    isTrustDevices: meta?.is_trustDevices,
+                    isVerify2FA: meta?.is_verify2fa,
+                })
+            );
+            setIsLoading(false);
+            return;
+        }
+        // hiển thị thông báo đăng nhập thành công
+        dispatch(
+            addToast({
+                type: "success",
+                title: "Đăng nhập thành công!",
+                duration: 3000,
+            })
+        );
+        // thêm thông tin người dùng khi đúng
+        dispatch(
+            adDataAuth({
+                user: resultLogin.data,
+            })
+        );
+        // Tắt auth
+        handleOnclose();
+        setIsLoading(false);
     };
     return (
         <div className={cx("wrapper", { [className]: className })}>

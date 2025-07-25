@@ -13,14 +13,13 @@ class AuthService {
                 usernameOrEmail,
                 password,
             });
-            console.log(result);
             return result.data;
         } catch (error) {
             console.log(error);
             const errMsg = error?.response?.data?.error || "";
-            const message =
+            const { message, key } =
                 ERROR_MESSAGES_VI[errMsg] || ERROR_MESSAGES_VI.DEFAULT;
-            return { error: message };
+            throw new Error({ error: { message, key } });
         }
     }
     // register
@@ -31,9 +30,9 @@ class AuthService {
         } catch (error) {
             console.log(error);
             const errMsg = error?.response?.data?.error || "";
-            const message =
+            const { message, key } =
                 ERROR_MESSAGES_VI[errMsg] || ERROR_MESSAGES_VI.DEFAULT;
-            return { error: message };
+            return { error: { message, key } };
         }
     }
     // send mail
@@ -92,9 +91,9 @@ class AuthService {
             return result;
         } catch (error) {
             const errMsg = error?.response?.data?.error || "";
-            const message =
+            const { message, key } =
                 ERROR_MESSAGES_VI[errMsg] || ERROR_MESSAGES_VI.DEFAULT;
-            return { error: message };
+            return { error: { message, key } };
         }
     }
 }

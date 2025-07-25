@@ -3,12 +3,17 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import AppRouter from "~/AppRouter";
-import { useInitUserAuth, useToastDuration } from "~/Hooks";
+import {
+    useAuthFlowController,
+    useInitUserAuth,
+    useToastDuration,
+} from "~/Hooks";
 import ModalLayer from "~/Layouts/ModalLayer/ModalLayer";
 
 function App() {
     useInitUserAuth();
     useToastDuration();
+    useAuthFlowController();
     return (
         <Router>
             {/* router */}

@@ -135,7 +135,7 @@ function Authenticate({
                 <div className={cx("title")}>
                     <h3>{title}</h3>
                     <p>{description}</p>
-                    <p>{`email : ${email}`}</p>
+                    <p>{email && `email : ${email}`}</p>
                 </div>
                 <div className={cx("selectMethod")}>
                     <p>Chọn phương thức xác thực</p>

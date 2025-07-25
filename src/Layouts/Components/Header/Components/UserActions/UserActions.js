@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { jwtDecode } from "jwt-decode";
 import classNames from "classnames/bind";
 import { useEffect, useState } from "react";
 

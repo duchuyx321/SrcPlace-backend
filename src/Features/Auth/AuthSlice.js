@@ -46,11 +46,14 @@ const authSlice = createSlice({
         },
         updateAuthStatus(state, action) {
             const payload = action.payload;
-            state.authSlice.isInitialized = payload.initialState || false;
+            state.authStatus.isInitialized = payload.isInitialized || false;
             state.authStatus.isSession = payload.isSession || false;
             state.authStatus.isEnabled2FA = payload.isEnabled2FA || false;
             state.authStatus.isTrustDevices = payload.isTrustDevices || false;
             state.authStatus.isVerify2FA = payload.isVerify2FA || false;
+        },
+        clearAuthStatue(state) {
+            state.authStatus = init.authStatus;
         },
         //  logout => clear data
         clearDataAuth(state) {
@@ -60,6 +63,6 @@ const authSlice = createSlice({
         },
     },
 });
-export const { adDataAuth, clearDataAuth, updateAuthStatus } =
+export const { adDataAuth, clearDataAuth, updateAuthStatus, clearAuthStatue } =
     authSlice.actions;
 export default authSlice.reducer;
