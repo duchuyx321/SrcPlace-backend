@@ -64,8 +64,8 @@ class AuthController {
             const result = await AuthServices.validateLoginSession({
                 user_ID: user._id,
                 device_ID: device_ID,
-                ip: '',
-                userAgent: '',
+                ip,
+                userAgent,
             });
             const profile = {
                 user_ID: user._id,
@@ -345,7 +345,7 @@ class AuthController {
                 user_ID,
                 token: RefreshToken?.split(' ')[1],
             });
-            const user = await Users.findById(user_ID);
+            const user = await Users.findById(user_ID).select('-password');
             const { password, ...other } = user._doc;
             return res.status(200).json({ data: other, meta: { AccessToken } });
         } catch (error) {
@@ -392,6 +392,57 @@ class AuthController {
         } catch (error) {
             console.log(error);
             return res.status(501).json({ error: error.message });
+        }
+    }
+    // [POST] --/auth/session/resume
+    async resumeSession(req, res, next) {
+        try {
+            const { user_ID, device_ID, role } = req.user;
+            const user = await Users.findOne({
+                _id: user_ID,
+                is_blocked: false,
+            }).select('-password');
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ error: 'User not found or is blocked!' });
+            }
+            const userAgent = req.headers['user-agent'];
+            const ip = req.ip;
+            const result = await AuthServices.validateLoginSession({
+                user_ID: user._id,
+                device_ID: device_ID,
+                ip,
+                userAgent,
+            });
+            const { is_session, is_enabled2fa, is_trustDevices, is_verify2fa } =
+                result;
+            const needsVerification =
+                is_session && is_enabled2fa && !is_trustDevices;
+            if (needsVerification) {
+                return res.status(403).json({ error: 'you need to verify!' });
+            }
+            //  tạo token và kiểm tra
+            // tạo jwt
+            const profile = { user_ID, device_ID, role };
+            const AccessToken = await newAccessToken(profile);
+            const RefreshToken = await newRefreshToken({ profile });
+            const tokenStr = RefreshToken?.startsWith('Bearer ')
+                ? RefreshToken.split(' ')[1]
+                : RefreshToken;
+            await res.cookie('refreshToken', RefreshToken, setTokenInCookie());
+            // thêm cookie vào db
+            await TokenService.addToken({
+                ip,
+                device_ID,
+                userAgent,
+                user_ID,
+                token: tokenStr,
+            });
+            const { password, ...other } = user._doc;
+            return res.status(200).json({ data: other, meta: { AccessToken } });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
         }
     }
 }
