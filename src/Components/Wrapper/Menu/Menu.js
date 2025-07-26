@@ -19,7 +19,7 @@ function Menu({
     onClickHide,
     isArrow = true,
     onChange,
-    CustomHeader,
+    CustomFooter,
     title,
     isImage = false,
     isPrice = false,
@@ -31,9 +31,10 @@ function Menu({
                 isArrow={isArrow}
                 small={small}
                 tabIndex="-1"
+                customFooter={!!CustomFooter && items.length !== 0}
                 {...attrs}
             >
-                {CustomHeader || <Header title={title} />}
+                <Header title={title} />
                 {items.length === 0 ? (
                     <p className={cx("not_item")}>Chưa có sản phẩm!</p>
                 ) : (
@@ -49,6 +50,7 @@ function Menu({
                         );
                     })
                 )}
+                {CustomFooter && items.length !== 0 && <CustomFooter />}
             </Wrapper>
         );
     };

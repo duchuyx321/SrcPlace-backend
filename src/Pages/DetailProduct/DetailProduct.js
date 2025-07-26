@@ -21,6 +21,7 @@ import { buyNow, calculateTotalBuy } from "~/Features/Checkout/checkoutSlice";
 import { selectCartResult } from "~/Features/Cart/cartSelect";
 import { addToast } from "~/Features/Toast/toastSlice";
 import MediaPreview from "./Components/MediaPreview";
+import CartService from "~/Services/CartService";
 
 const cx = classNames.bind(style);
 
@@ -39,6 +40,9 @@ function DetailProduct() {
         const AccessToken = localStorage.getItem("AccessToken");
         setIsLogin(!!AccessToken);
     }, []);
+    const handleFetchApiAddToCart = async (project_ID) => {
+        await CartService.addToCart(project_ID);
+    };
     //  trả kết quả
     useEffect(() => {
         if (!cartResult) return;
@@ -51,6 +55,7 @@ function DetailProduct() {
                     duration: 5000,
                 })
             );
+            handleAddToCart(resultProduct._id);
             dispatch(calculateTotal());
         } else if (cartResult.status === 403) {
             dispatch(
@@ -85,8 +90,13 @@ function DetailProduct() {
                 price: resultProduct.price,
             })
         );
+        dispatch();
     };
     const handleOnBuy = () => {
+        if (!isLogin) {
+            // hiển thị thông báo chưa đăng nhập
+            return;
+        }
         dispatch(
             buyNow({
                 _id: resultProduct._id,

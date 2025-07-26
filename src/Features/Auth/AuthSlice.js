@@ -3,18 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const getInitialAuthStatus = () => {
     try {
         const saved = sessionStorage.getItem("authStatus");
-        if (saved) return JSON.parse(saved);
+        if (saved) {
+            return {
+                ...init,
+                authStatus: JSON.parse(saved),
+            };
+        }
     } catch {}
-    return {
-        authStatus: {
-            isInitialized: false,
-            isSession: false,
-            isTrustDevices: false,
-            isEnabled2FA: false,
-        },
-        user: {},
-        isLogin: false,
-    };
+    return init;
 };
 const init = {
     user: {},

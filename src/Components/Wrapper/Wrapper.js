@@ -12,11 +12,13 @@ function Wrapper({
     isArrow = true,
     small = false,
     large = false,
+    customFooter = false,
 }) {
     const classes = cx("wrapper", {
         [className]: className,
         small,
         large,
+        customFooter,
     });
     return (
         <>

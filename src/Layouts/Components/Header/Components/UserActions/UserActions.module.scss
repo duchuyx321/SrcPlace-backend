@@ -61,3 +61,18 @@
     z-index: 1;
     color: var(--white-color);
 }
+.action {
+    width: 96%;
+    height: 60px;
+    position: fixed;
+    bottom: 3px;
+    left: 2px;
+    background-color: var(--white-color);
+    z-index: 103;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & > .btn_viewCart {
+        background-color: #fb7575;
+    }
+}

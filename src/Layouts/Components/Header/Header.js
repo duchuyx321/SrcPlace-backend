@@ -35,7 +35,9 @@ function Header({ is_searchHeader = true }) {
                         src={image.logoWhiteImage}
                         alt="Logo SrcPlace"
                     />
-                    <h3>Thư Viện Đồ Án</h3>
+                    <h3 className={cx({ nameTitle: is_searchHeader })}>
+                        Thư Viện Đồ Án
+                    </h3>
                 </Link>
             </div>
             {is_searchHeader && <Search />}

@@ -10,5 +10,14 @@ class MeService {
             return { error: error.response?.data?.error };
         }
     }
+    // get summary
+    async getSummary() {
+        try {
+            const result = await httpRequest.GET("user/me/summary");
+            return result.data;
+        } catch (error) {
+            return { error: error.response?.data?.error };
+        }
+    }
 }
 export default new MeService();

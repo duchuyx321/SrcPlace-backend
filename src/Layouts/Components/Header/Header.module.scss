@@ -3,10 +3,8 @@
     .wrapper {
         padding: 0.9rem;
     }
-    .comeHome {
-        & > h3 {
-            display: none;
-        }
+    .nameTitle {
+        display: none;
     }
     button.btn_register {
         display: none;
@@ -23,10 +21,8 @@
     .wrapper {
         padding: 1.6rem 3.4rem;
     }
-    .comeHome {
-        & > h3 {
-            display: none;
-        }
+    .nameTitle {
+        display: none;
     }
     .search {
         max-width: 42.6rem;

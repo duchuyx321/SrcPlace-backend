@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const init = { items: [], total: 0, result: { status: 200, message: "" } };
+const init = {
+    items: [],
+    total: 0,
+    totalProduct: 0,
+    isFetched: false,
+    result: { status: 200, message: "" },
+};
 
 const cartSlice = createSlice({
     name: "cart",
@@ -8,7 +14,7 @@ const cartSlice = createSlice({
     reducers: {
         // thêm sản phẩm vào giỏ hàng
         addToCart(state, action) {
-            const product = state.items.find(
+            const product = state.items.some(
                 (product) => product._id === action.payload._id
             );
             if (product) {
@@ -24,10 +30,16 @@ const cartSlice = createSlice({
                 thumbnail: action.payload.image_url,
                 price: action.payload.price,
             });
+            state.totalProduct = state.totalProduct + 1;
             state.result = {
                 status: 200,
                 message: "Đã Thêm Vào Giỏ Hàng Thành Công",
             };
+        },
+        // lấy dữ liệu đổ vào giỏ hàng
+        getDataToCart(state, action) {
+            state.isFetched = true;
+            state.items = action.payload.products;
         },
         // xóa thông báo
         clearMessage(state) {
@@ -46,8 +58,10 @@ const cartSlice = createSlice({
         },
         // xóa tất cả trong giỏ hàng
         clearCart(state, action) {
-            state.items = [];
-            state.total = 0;
+            state.items = init.total;
+            state.total = init.total;
+            state.isFetched = init.isFetched;
+            state.totalProduct = init.totalProduct;
             state.result = {
                 status: 202,
                 message: "Đã xoá tất cả sản phẩm khỏi giỏ hàng!",
@@ -59,6 +73,10 @@ const cartSlice = createSlice({
                 return total + product.price;
             }, 0);
         },
+        //  updateToastProduct
+        updateToastProduct(state, action) {
+            state.totalProduct = action.payload.totalProduct || 0;
+        },
     },
 });
 
@@ -68,5 +86,7 @@ export const {
     clearCart,
     calculateTotal,
     clearMessage,
+    updateToastProduct,
+    getDataToCart,
 } = cartSlice.actions;
 export default cartSlice.reducer;

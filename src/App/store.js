@@ -7,11 +7,14 @@ import avatarModalReducer from "~/Features/AvatarModal/AvatarModalSlice";
 import authReducer from "~/Features/Auth/AuthSlice";
 import verifyReducer from "~/Features/Verify/VerifySlice";
 import modalReducer from "~/Features/Modal/modalSlice";
+import notificationReducer from "~/Features/Notification/notificationSlice";
 
 const store = configureStore({
     reducer: {
         // auth
         auth: authReducer,
+        // notification,
+        notification: notificationReducer,
         //giỏ hàng
         cart: cartReducer,
         // checkout
