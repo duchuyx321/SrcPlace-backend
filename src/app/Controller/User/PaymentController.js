@@ -70,7 +70,7 @@ class PaymentController {
                 amount,
                 orderInfo,
                 callback:
-                    'https://21bb-118-69-34-193.ngrok-free.app/api/payment/callback',
+                    'https://e76894d227a8.ngrok-free.app/api/payment/callback',
             });
             return res.status(200).json({
                 data: {

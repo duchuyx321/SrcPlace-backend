@@ -31,8 +31,7 @@ class CardController {
     async addCards(req, res, next) {
         try {
             const { user_ID } = req.user;
-            const io = req.io;
-            const { project_ID } = req.body || [];
+            const { project_ID } = req.body;
             const expiresAt = new Date(Date.now() + ms('30d'));
             if (!project_ID) {
                 return res.status(400).json({
@@ -50,13 +49,6 @@ class CardController {
                 },
                 { new: true, upsert: true },
             );
-            const totalCount = await Card.countDocuments({
-                user_ID,
-            });
-            // gửi socket về cho người dùng
-            await SocketService.emitToUser(io, user_ID, 'update_cart_count', {
-                totalCount,
-            });
             return res
                 .status(200)
                 .json({ data: { message: 'Create card is successful!' } });
@@ -69,7 +61,6 @@ class CardController {
     async deletedCards(req, res, next) {
         try {
             const { user_ID } = req.user;
-            const io = req.io;
             const { card_IDs } = req.body;
             if (!Array.isArray(card_IDs) || card_IDs.length === 0) {
                 return res.status(400).json({
@@ -77,12 +68,6 @@ class CardController {
                 });
             }
             await Card.delete({ user_ID, _id: { $in: card_IDs } });
-            const totalCount = await Card.countDocuments({
-                user_ID,
-            });
-            await SocketService.emitToUser(io, user_ID, 'update_cart_count', {
-                totalCount,
-            });
             return res
                 .status(200)
                 .json({ data: { message: 'delete cards is successful' } });
