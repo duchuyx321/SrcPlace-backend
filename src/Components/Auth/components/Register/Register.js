@@ -4,7 +4,7 @@ import { RiLoader2Line } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 
 import style from "./Register.module.scss";
-import BoxInput from "../BoxInput";
+import BoxInput from "~/Components/BoxInput";
 import Button from "~/Components/Button";
 import useRegisterVariables from "./useRegisterVariables";
 import AuthService from "~/Services/AuthService";

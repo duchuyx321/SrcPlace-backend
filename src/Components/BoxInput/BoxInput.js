@@ -57,17 +57,19 @@ function BoxInput({
         if (!debounce) {
             return;
         }
-        if (isCheck && !menuRegex[id].test(debounce)) {
-            setCheck("warning");
-            dispatch(
-                addToast({
-                    type: "warning",
-                    title: `${title} ${menuWarning[id]}`,
-                    duration: 3000,
-                })
-            );
-            handleSetValue({ key: id, value: "" });
-            return;
+        if (isCheck) {
+            if (!menuRegex[id].test(debounce)) {
+                setCheck("warning");
+                dispatch(
+                    addToast({
+                        type: "warning",
+                        title: `${title} ${menuWarning[id]}`,
+                        duration: 3000,
+                    })
+                );
+                handleSetValue({ key: id, value: "" });
+                return;
+            }
         }
         setCheck("success");
         handleSetValue({ key: id, value: debounce.trim() });

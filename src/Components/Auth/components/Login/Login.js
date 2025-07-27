@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 
 import style from "./Login.module.scss";
-import BoxInput from "../BoxInput";
+import BoxInput from "~/Components/BoxInput";
 import Button from "~/Components/Button";
 import AuthService from "~/Services/AuthService";
 import { addToast } from "~/Features/Toast/toastSlice";

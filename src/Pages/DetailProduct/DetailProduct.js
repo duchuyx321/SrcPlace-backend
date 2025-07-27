@@ -22,6 +22,7 @@ import { selectCartResult } from "~/Features/Cart/cartSelect";
 import { addToast } from "~/Features/Toast/toastSlice";
 import MediaPreview from "./Components/MediaPreview";
 import CartService from "~/Services/CartService";
+import PublicService from "~/Services/PublicService";
 
 const cx = classNames.bind(style);
 
@@ -35,10 +36,18 @@ function DetailProduct() {
     );
     const [resultProduct, setResultProduct] = useState({});
     const [isActionAddToCart, setIsActionAddToCart] = useState(false);
+    const handleFetchApiProduct = async () => {
+        const result = await PublicService.getProjectFlowSlug(slug);
+        if (result.error) {
+            setResultProduct(result || {});
+        }
+    };
     //  kiểm tra đăng nhập
     useEffect(() => {
         const AccessToken = localStorage.getItem("AccessToken");
         setIsLogin(!!AccessToken);
+        //  call api lấy các thông tin của đơn hàng
+        handleFetchApiProduct();
     }, []);
     const handleFetchApiAddToCart = async (project_ID) => {
         await CartService.addToCart(project_ID);
@@ -55,6 +64,8 @@ function DetailProduct() {
                     duration: 5000,
                 })
             );
+            // cal api thêm vào giỏ hàng
+            handleFetchApiAddToCart();
             handleAddToCart(resultProduct._id);
             dispatch(calculateTotal());
         } else if (cartResult.status === 403) {
@@ -102,7 +113,7 @@ function DetailProduct() {
                 _id: resultProduct._id,
                 slug: resultProduct.slug,
                 title: resultProduct.title,
-                image_url: resultProduct.image_url,
+                image_url: resultProduct.thumbnail?.image_url,
                 price: resultProduct.price,
             })
         );

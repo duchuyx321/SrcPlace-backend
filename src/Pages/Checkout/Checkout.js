@@ -6,17 +6,26 @@ import Seo from "~/Components/Seo";
 import {
     selectCheckoutItems,
     selectCheckoutTotal,
+    selectIsFetchedCheckout,
 } from "~/Features/Checkout/checkoutSelect";
-import { formatNumberPrice } from "~/Util/lib/formatNumberPrice";
-import Button from "~/Components/Button";
+
 import Product from "./Components/Product";
+import { useFetch } from "~/Hooks";
+import Action from "./Components/Action";
 
 const cx = classNames.bind(style);
 
 function Checkout() {
-    const items = [0, 0, 0, 0, 0, 0]; //useSelector(selectCheckoutItems) ;
-    let total = useSelector(selectCheckoutTotal);
-    console.log(items);
+    const items = [0, 0, 0, 0, 0, 0, 0, 0]; //useSelector(selectCheckoutItems);
+    const isFetched = useSelector(selectIsFetchedCheckout);
+
+    const handleFetchApiCheckOut = () => {
+        // call api lấy các thông tin thêm vào check out
+    };
+    useFetch({
+        handleOnInside: handleFetchApiCheckOut,
+        isFetchedList: [isFetched],
+    });
     return (
         <>
             <Seo
@@ -36,15 +45,7 @@ function Checkout() {
                     ))}
                 </div>
                 <div className={cx("action")}>
-                    <div className={cx("general")}>
-                        <p>{`Tổng cộng(${items.length || 1} sản phẩm): `}</p>
-                        <span>
-                            {formatNumberPrice({ number: total || 500000 })}
-                        </span>
-                    </div>
-                    <Button primary className={cx("btn_buy")}>
-                        Mua Ngay
-                    </Button>
+                    <Action totalProducts={items.length} />
                 </div>
             </div>
         </>

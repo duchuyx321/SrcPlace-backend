@@ -1,0 +1,60 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .general {
+        margin-bottom: 16px;
+        justify-content: center;
+    }
+    .action_payment {
+        flex-direction: column;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .general {
+        margin-right: 16px;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1025px) {
+    .general {
+        margin-right: 16px;
+    }
+}
+.wrapper {
+    width: 100%;
+    background-color: var(--white-color);
+}
+.action_voucher {
+}
+.voucher {
+    min-width: 10rem;
+    max-width: 32rem;
+    display: flex;
+    gap: 8px;
+}
+.btn_applyVoucher {
+}
+.action_payment {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.general {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--black-color);
+    & > span {
+        color: #f86120;
+    }
+    & > p {
+        font-size: 13px;
+    }
+}
+.btn_buy {
+    background-color: #f34f4f;
+    &:hover {
+        background-color: #f568684a;
+    }
+}

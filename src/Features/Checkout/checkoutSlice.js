@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const init = { items: [], total: 0 };
+const init = { items: [], total: 0, isFetched: false };
 
 const checkoutSlice = createSlice({
     name: "checkout",
@@ -8,6 +8,7 @@ const checkoutSlice = createSlice({
     reducers: {
         // buyNow
         buyNow(state, action) {
+            state.isFetched = true;
             state.items = [
                 {
                     _id: action.payload._id,

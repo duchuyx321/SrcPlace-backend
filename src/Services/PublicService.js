@@ -30,6 +30,14 @@ class PublicService {
             return { error: error.message };
         }
     }
+    async getProjectFlowSlug(slug) {
+        try {
+            const result = await httpRequest("slug");
+            return result.data;
+        } catch (error) {
+            return { error: error };
+        }
+    }
 }
 
 export default new PublicService();
