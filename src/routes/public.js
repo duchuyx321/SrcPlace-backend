@@ -8,6 +8,7 @@ const PublicController = require('../app/Controller/PublicController');
 router.get('/projects', PublicController.getProjectsByType);
 router.get('/search', PublicController.search);
 router.get('/categories', PublicController.getCategories);
+router.get('/:slug', PublicController.getProjectsFlowSlug);
 router.get('/', PublicController.getProjects);
 //
 

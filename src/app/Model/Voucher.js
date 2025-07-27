@@ -4,7 +4,13 @@ const Schema = mongoose.Schema;
 
 const VoucherSchema = new Schema(
     {
-        code: { type: String, require: true, unique: true },
+        code: {
+            type: String,
+            require: true,
+            unique: true,
+            minlength: 6,
+            maxlength: 20,
+        },
         voucher_type: {
             type: String,
             enum: ['percent', 'money'],

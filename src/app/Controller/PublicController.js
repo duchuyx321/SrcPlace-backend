@@ -2,12 +2,23 @@ const Projects = require('../Model/Projects');
 const Categories = require('../Model/Categories');
 
 class PublicController {
-    // [GET]--/overview
-    async overview(req, res, next) {
+    // [GET]--/:slug
+    async getProjectsFlowSlug(req, res, next) {
         try {
+            const { slug } = req.params;
+            const project = await Projects.findOne({ slug }).select(
+                '-download_url',
+            );
+            if (!project) {
+                return res
+                    .status(404)
+                    .json({ error: 'project does not exist!' });
+            }
+            const { download_url, ...other } = project;
+            return res.status(200).json({ data: other });
         } catch (error) {
             console.log(error);
-            return res.status(501).json();
+            return res.status(501).json({ error: error.message });
         }
     }
     // [GET] --/?limit=10&page=1
