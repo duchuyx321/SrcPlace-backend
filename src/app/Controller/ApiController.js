@@ -1,3 +1,12 @@
+import TokenService from '../../services/TokenService';
+import { newDeviceID } from '../../util/deviceUtil';
+import {
+    newAccessToken,
+    newRefreshToken,
+    setTokenInCookie,
+} from '../../util/jwtUtil';
+import TrustedDevices from '../Model/TrustedDevices';
+
 const OrderServices = require('../../services/OrderServices');
 const PaymentService = require('../../services/PaymentService');
 const Orders = require('../Model/Orders');
@@ -107,4 +116,68 @@ class ApiController {
         }
     }
 }
+export const PassportProfile = (type) => {
+    return (req, res, next) => {
+        passport.authenticate(type, async (err, user) => {
+            if (err || !user) {
+                return res.redirect(
+                    `${process.env.URL_CLIENT}/login?error=true`,
+                );
+            }
+            try {
+                const userAgent = req.headers['user-agent'];
+                const ip = req.ip;
+                // Kiểm tra thiết bị tin cậy
+                let trustedDevice = await TrustedDevices.findOne({
+                    user_ID: user._id,
+                    ip,
+                    userAgent,
+                });
+                let device_ID = trustedDevice?.device_ID;
+                if (!trustedDevice) {
+                    device_ID = await newDeviceID();
+                    await TrustedDevices.create({
+                        user_ID: user._id,
+                        ip,
+                        userAgent,
+                        device_ID,
+                    });
+                }
+                const profile = {
+                    user_ID: user._id,
+                    device_ID,
+                    role: user.role,
+                };
+                const AccessToken = await newAccessToken(profile);
+                const RefreshToken = await newRefreshToken({ profile });
+                await res.cookie(
+                    'refreshToken',
+                    RefreshToken,
+                    setTokenInCookie(),
+                );
+                // thêm cookie vào db
+                await TokenService.addToken({
+                    ip,
+                    device_ID,
+                    userAgent,
+                    user_ID: user._id,
+                    token: RefreshToken?.split(' ')[1],
+                });
+
+                const html = `
+                    <script>
+                        window.opener.postMessage({
+                            AccessToken: '${AccessToken}'
+                        }, '${process.env.URL_CLIENT}');
+                        window.close();
+                    </script>
+                `;
+                res.send(html);
+            } catch (error) {
+                return res.status(500).json({ message: error.message });
+            }
+        })(req, res, next);
+    };
+};
+
 module.exports = new ApiController();

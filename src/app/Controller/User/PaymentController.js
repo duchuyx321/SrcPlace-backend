@@ -84,6 +84,16 @@ class PaymentController {
             return res.status(500).json({ error: error.message });
         }
     }
+    async getPaymentMethods(req, res, next) {
+        try {
+            const paymentMethods = await PaymentMethods.find({
+                status: 'active',
+            }).select('-config');
+            return res.status(200).json({ data: paymentMethods });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new PaymentController();

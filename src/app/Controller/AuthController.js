@@ -445,6 +445,8 @@ class AuthController {
             return res.status(500).json({ error: error.message });
         }
     }
+    // [POST]
+    async loginGoogle(req, res, next) {}
 }
 
 module.exports = new AuthController();

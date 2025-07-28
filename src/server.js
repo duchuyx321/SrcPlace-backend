@@ -7,6 +7,7 @@ const { Server } = require('socket.io');
 const path = require('path');
 
 require('dotenv').config();
+require('./config/Passport/connectPassport');
 
 const router = require('./routes');
 const connectMongoDB = require('./config/Database/ConnectMongoDB');
@@ -21,12 +22,14 @@ connectMongoDB();
 // bắt dữ liệu
 app.use(morgan('combined'));
 app.use(cookieParser());
+
 app.use(
     cors({
         origin: process.env.URL_CLIENT,
         credentials: true,
     }),
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //file tĩnh

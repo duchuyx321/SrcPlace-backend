@@ -1,4 +1,5 @@
 const express = require('express');
+const passport = require('passport');
 
 const router = express.Router();
 
@@ -31,5 +32,20 @@ router.post(
     AuthController.refresh,
 );
 router.post('/logout', AuthController.logout);
+// other google, facebook
+router.get(
+    '/google',
+    passport.authenticate('google', {
+        scope: ['profile', 'email'],
+        session: false,
+    }),
+);
+router.get(
+    '/facebook',
+    passport.authenticate('facebook', {
+        session: false,
+        scope: ['email'],
+    }),
+);
 
 module.exports = router;

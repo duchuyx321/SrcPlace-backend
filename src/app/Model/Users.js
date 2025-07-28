@@ -21,6 +21,7 @@ const UsersSchema = new Schema(
             default: 'User',
         },
         avatar: { image_url: { type: String }, public_id: { type: String } },
+        provider_id: { type: String },
         first_name: { type: String, minlength: 1, maxlength: 30 },
         last_name: { type: String, minlength: 1, maxlength: 30 },
         is_blocked: { type: Boolean, default: false },
