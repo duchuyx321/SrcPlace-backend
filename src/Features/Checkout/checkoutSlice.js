@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const init = { items: [], total: 0, isFetched: false };
+const init = {
+    items: [],
+    total: 0,
+    isFetched: false,
+    vouchers: [], //{ code: null, discount: 0 }
+    finalTotal: 0,
+};
 
 const checkoutSlice = createSlice({
     name: "checkout",
@@ -17,6 +23,12 @@ const checkoutSlice = createSlice({
                     price: action.payload.price,
                 },
             ];
+        },
+        // updateCheckout
+        updateCheckout(state, action) {
+            state.isFetched = true;
+            state.items = action.payload.products || [];
+            state.vouchers = action.payload.vouchers || [];
         },
         // addToBuy
         addToBuy(state, action) {
@@ -56,14 +68,37 @@ const checkoutSlice = createSlice({
         },
         // calculateTotal
         calculateTotalBuy(state) {
-            state.total = state.items.reduce((amount, product) => {
+            const total = state.items.reduce((amount, product) => {
                 return amount + product.price;
             }, 0);
+            state.total = total;
+            state.finalTotal = total;
+        },
+        addVoucher(state, action) {
+            state.vouchers.push({
+                code: action.payload.code,
+                discount: action.payload.discount,
+            });
+        },
+        removeVoucher(state, action) {
+            state.vouchers = state.vouchers.filter(
+                (item) => item.code !== action.payload.code
+            );
+        },
+        recalculateFinalTotal(state) {
+            const totalDiscount = state.vouchers.reduce(
+                (sum, voucher) => sum + (voucher.discount || 0),
+                0
+            );
+            state.finalTotal = Math.max(0, state.total - totalDiscount);
         },
         // clear
         clearBuy(state) {
-            state.items = [];
-            state.total = 0;
+            state.items = init.items;
+            state.total = init.total;
+            state.isFetched = init.isFetched;
+            state.vouchers = init.vouchers;
+            state.finalTotal = init.finalTotal;
         },
     },
 });
@@ -73,7 +108,11 @@ export const {
     buyNow,
     calculateTotalBuy,
     clearBuy,
+    updateCheckout,
     removeItemsBuy,
     setToBuy,
+    addVoucher,
+    recalculateFinalTotal,
+    removeVoucher,
 } = checkoutSlice.actions;
 export default checkoutSlice.reducer;

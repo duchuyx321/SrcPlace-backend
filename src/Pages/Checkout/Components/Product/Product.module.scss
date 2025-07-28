@@ -2,35 +2,15 @@
 
 // mobile < 740px
 @media only screen and (max-width: 739px) {
-    .product {
-        & > img {
-            height: 50%;
-        }
-    }
 }
 // tablet (740px - 1024px)
 @media only screen and (min-width: 740px) and (max-width: 1023px) {
-    .product {
-        & > img {
-            height: 100%;
-        }
-    }
 }
 // desktop >= 1024px
 @media only screen and (min-width: 1024px) and (max-width: 1399px) {
-    .product {
-        & > img {
-            height: 100%;
-        }
-    }
 }
 //  > 1400
 @media only screen and (min-width: 1400px) {
-    .product {
-        & > img {
-            height: 100%;
-        }
-    }
 }
 
 .wrapper {
@@ -44,7 +24,7 @@
 
 .product {
     width: 65%;
-    height: 9rem;
+    height: 4rem;
     padding-left: 8px;
     color: var(--black-color);
     display: flex;
@@ -52,6 +32,7 @@
     gap: 8px;
 
     & > img {
+        height: 100%;
         border-radius: 2px;
         object-fit: cover;
     }

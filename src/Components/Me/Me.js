@@ -4,10 +4,13 @@ import { IoCashOutline, IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { CiShoppingBasket } from "react-icons/ci";
 import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 
 import style from "./Me.module.scss";
 import Image from "~/Components/Image";
 import Menu from "~/Components/Wrapper/Menu";
+import AuthService from "~/Services/AuthService";
+import { selectDataUserAuth } from "~/Features/Auth/AuthSelect";
 
 const cx = classNames.bind(style);
 const MenuItemUser = [
@@ -40,13 +43,13 @@ const MenuItemPublic = [
 ];
 
 function Me() {
-    let role = "User";
     const [isHide, setIsHide] = useState(false);
+    const dataAuth = useSelector(selectDataUserAuth);
     const MenuItem = useMemo(() => {
-        if (role) {
-            if (role === "User") {
+        if (dataAuth.role) {
+            if (dataAuth.role === "User") {
                 return [...MenuItemUser, ...MenuItemPublic];
-            } else if (role === "Admin") {
+            } else if (dataAuth.role === "Admin") {
                 return [...MenuItemAdmin, ...MenuItemPublic];
             }
         }
@@ -56,10 +59,10 @@ function Me() {
         setIsHide(!isHide);
     };
     const handleOnChange = (item) => {
-        const innerText = item.target.innerText;
+        const innerText = item.key;
         switch (innerText) {
-            case "Đăng Xuất":
-                console.log(true);
+            case "logout":
+                AuthService.logout();
                 return;
             default:
                 return;
@@ -75,7 +78,7 @@ function Me() {
             title="Bảng Điều Khiển"
         >
             <button className={cx("wrapper")} onClick={() => handleOnHide()}>
-                <Image src={""} alt="Avatar user" />
+                <Image src={dataAuth.avatar?.image || ""} alt="Avatar user" />
             </button>
         </Menu>
     );

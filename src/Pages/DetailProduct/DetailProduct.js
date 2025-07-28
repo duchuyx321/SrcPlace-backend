@@ -17,12 +17,17 @@ import {
     calculateTotal,
     clearMessage,
 } from "~/Features/Cart/cartSlice";
-import { buyNow, calculateTotalBuy } from "~/Features/Checkout/checkoutSlice";
+import {
+    buyNow,
+    calculateTotalBuy,
+    recalculateFinalTotal,
+} from "~/Features/Checkout/checkoutSlice";
 import { selectCartResult } from "~/Features/Cart/cartSelect";
 import { addToast } from "~/Features/Toast/toastSlice";
 import MediaPreview from "./Components/MediaPreview";
 import CartService from "~/Services/CartService";
 import PublicService from "~/Services/PublicService";
+import CheckoutService from "~/Services/CheckoutService";
 
 const cx = classNames.bind(style);
 
@@ -66,7 +71,7 @@ function DetailProduct() {
             );
             // cal api thêm vào giỏ hàng
             handleFetchApiAddToCart();
-            handleAddToCart(resultProduct._id);
+            handleAddToCart();
             dispatch(calculateTotal());
         } else if (cartResult.status === 403) {
             dispatch(
@@ -79,7 +84,7 @@ function DetailProduct() {
         }
         // xóa thông báo
         dispatch(clearMessage());
-    }, [cartResult, dispatch]);
+    }, [cartResult]);
 
     const handleAddToCart = () => {
         // kiểm tra thêm điểu kiện đã đăng nhập hay chưa
@@ -101,25 +106,31 @@ function DetailProduct() {
                 price: resultProduct.price,
             })
         );
-        dispatch();
     };
-    const handleOnBuy = () => {
+    const handleOnBuy = async () => {
         if (!isLogin) {
             // hiển thị thông báo chưa đăng nhập
             return;
         }
-        dispatch(
-            buyNow({
-                _id: resultProduct._id,
-                slug: resultProduct.slug,
-                title: resultProduct.title,
-                image_url: resultProduct.thumbnail?.image_url,
-                price: resultProduct.price,
-            })
-        );
-        dispatch(calculateTotalBuy());
-        navigate("/checkout");
+        const updateCheckout = await CheckoutService.addCheckout({
+            product_IDs: [resultProduct._id],
+        });
+        if (!updateCheckout.error) {
+            dispatch(
+                buyNow({
+                    _id: resultProduct._id,
+                    slug: resultProduct.slug,
+                    title: resultProduct.title,
+                    image_url: resultProduct.thumbnail?.image_url,
+                    price: resultProduct.price,
+                })
+            );
+            dispatch(calculateTotalBuy());
+            dispatch(recalculateFinalTotal());
+            navigate("/checkout");
+        }
     };
+
     const mediaList = [
         {
             type: "video",
