@@ -24,7 +24,7 @@ class UserController {
             if (!user || !wallet) {
                 return res.status(503).json({ error: 'User does not exist!' });
             }
-            const { password, role, ...otherUser } = user._doc;
+            const { password, ...otherUser } = user._doc;
             // lấy khá học đã mua
             const orders = await Orders.find({ user_ID })
                 .select('project_ID ')

@@ -14,7 +14,7 @@ class PublicController {
                     .status(404)
                     .json({ error: 'project does not exist!' });
             }
-            const { download_url, ...other } = project;
+            const { download_url, ...other } = project._doc;
             return res.status(200).json({ data: other });
         } catch (error) {
             console.log(error);

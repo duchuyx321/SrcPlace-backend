@@ -1,17 +1,19 @@
-import TokenService from '../../services/TokenService';
-import { newDeviceID } from '../../util/deviceUtil';
-import {
+const TokenService = require('../../services/TokenService');
+const { newDeviceID } = require('../../util/deviceUtil');
+const {
     newAccessToken,
     newRefreshToken,
     setTokenInCookie,
-} from '../../util/jwtUtil';
-import TrustedDevices from '../Model/TrustedDevices';
+} = require('../../util/jwtUtil');
+const TrustedDevices = require('../Model/TrustedDevices');
 
 const OrderServices = require('../../services/OrderServices');
 const PaymentService = require('../../services/PaymentService');
 const Orders = require('../Model/Orders');
 const PaymentMethods = require('../Model/PaymentMethods');
 const { decrypt, newSignatureCallback } = require('../../util/keyUtil');
+const passport = require('passport');
+require('dotenv').config();
 class ApiController {
     // [POST] --/api/payment/callback
     async paymentCallback(req, res, next) {
@@ -108,6 +110,7 @@ class ApiController {
                     .status(resultAddPaymentInOrder.status)
                     .json({ error: resultAddPaymentInOrder.error });
             }
+            // gửi thông báo đến cho người dùng
             return res.status(200).json({ data: { message: 'successful!' } });
         } catch (error) {
             await OrderServices.destroyOrder({ order_IDs });
@@ -116,7 +119,7 @@ class ApiController {
         }
     }
 }
-export const PassportProfile = (type) => {
+const PassportProfile = (type) => {
     return (req, res, next) => {
         passport.authenticate(type, async (err, user) => {
             if (err || !user) {
@@ -167,11 +170,11 @@ export const PassportProfile = (type) => {
                 const html = `
                     <script>
                         window.opener.postMessage({
-                            AccessToken: '${AccessToken}'
+                            AccessToken: '${AccessToken}',
                         }, '${process.env.URL_CLIENT}');
                         window.close();
                     </script>
-                `;
+                    `;
                 res.send(html);
             } catch (error) {
                 return res.status(500).json({ message: error.message });
@@ -180,4 +183,7 @@ export const PassportProfile = (type) => {
     };
 };
 
-module.exports = new ApiController();
+module.exports = {
+    ApiController: new ApiController(),
+    PassportProfile,
+};

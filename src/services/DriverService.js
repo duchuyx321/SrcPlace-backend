@@ -68,6 +68,42 @@ class DriverService {
             return { error: error.message, status: 501 };
         }
     }
+    async permissionDriverUser({ source_IDs = [], email = '' }) {
+        try {
+            const permissions = [];
+            for (const source_ID of source_IDs) {
+                const permission = await driver.permissions.create({
+                    fileId: source_ID,
+                    requestBody: {
+                        type: 'user',
+                        role: 'reader',
+                        emailAddress: email,
+                    },
+                });
+                permissions.push(permission.data?.id);
+            }
+            return {
+                status: 200,
+                message: 'Cấp quyền thành công',
+                permissions,
+            };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+    async deletePermissionDriverUser(permissionIds = [], source_IDs = []) {
+        try {
+            for (let i = 0; i > source_IDs.length; i++) {
+                await driver.permissions.delete({
+                    fileId: source_IDs[i],
+                    permissionId: permissionIds[i],
+                });
+            }
+            return { status: 200, message: 'Thu hồi quyền thành công' };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
     async deleteFileToDriver(source_ID) {
         try {
             const deleteFile = await driver.files.delete({
