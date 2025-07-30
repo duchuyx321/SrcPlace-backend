@@ -5,6 +5,8 @@ import DetailProduct from "~/Pages/DetailProduct";
 import NotFund from "~/Pages/NotFound.js";
 import Products from "~/Pages/Products";
 import Checkout from "~/Pages/Checkout";
+import Payments from "~/Pages/Payments";
+import Downloads from "~/Pages/Downloads";
 // Layout
 import DetailLayout from "~/Layouts/DetailLayout";
 // các router không cần đăng nhập
@@ -30,6 +32,23 @@ const PublicRouters = [
         layout: DetailLayout,
         props: {
             isNoSidebarMobile: true,
+        },
+    },
+    {
+        path: config.routers.payments,
+        component: Payments,
+        layout: DetailLayout,
+        props: {
+            isNoSidebarMobile: true,
+        },
+    },
+    {
+        path: config.routers.downloads,
+        component: Downloads,
+        layout: DetailLayout,
+        props: {
+            isNoSidebarMobile: true,
+            isNoSidebar: true,
         },
     },
 ];

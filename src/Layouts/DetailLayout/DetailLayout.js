@@ -8,7 +8,11 @@ import SidebarDetail from "~/Layouts/Components/SidebarDetail";
 
 const cx = classNames.bind(style);
 
-function DetailLayout({ children, isNoSidebarMobile = false }) {
+function DetailLayout({
+    children,
+    isNoSidebar = false,
+    isNoSidebarMobile = false,
+}) {
     return (
         <div className={cx("wrapper")}>
             <div className={cx("wrapper")}>
@@ -16,11 +20,15 @@ function DetailLayout({ children, isNoSidebarMobile = false }) {
                     <Header />
                 </header>
                 <div className={cx("container")}>
-                    <aside className={cx("sidebar")}>
-                        <SidebarDetail />
-                    </aside>
+                    {!isNoSidebar && (
+                        <aside className={cx("sidebar")}>
+                            <SidebarDetail />
+                        </aside>
+                    )}
                     <div className={cx("body")}>
-                        <main className={cx("content")}>{children}</main>
+                        <main className={cx("content", { isNoSidebar })}>
+                            {children}
+                        </main>
                     </div>
                     <footer
                         className={cx("footer", {

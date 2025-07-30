@@ -32,7 +32,7 @@ class PublicService {
     }
     async getProjectFlowSlug(slug) {
         try {
-            const result = await httpRequest("slug");
+            const result = await httpRequest.GET(`${slug}`);
             return result.data;
         } catch (error) {
             return { error: error };

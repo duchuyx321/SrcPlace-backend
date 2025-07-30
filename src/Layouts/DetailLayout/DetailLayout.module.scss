@@ -72,6 +72,9 @@
     padding: 24px;
     margin-top: calc(var(--height-sidebar));
     z-index: 10;
+    &.isNoSidebar {
+        margin-top: 0;
+    }
 }
 
 .footer {

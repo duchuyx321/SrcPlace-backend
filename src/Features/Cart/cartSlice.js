@@ -14,6 +14,10 @@ const cartSlice = createSlice({
     reducers: {
         // thêm sản phẩm vào giỏ hàng
         addToCart(state, action) {
+            if (!Array.isArray(state.items)) {
+                state.items = [];
+            }
+
             const product = state.items.some(
                 (product) => product._id === action.payload._id
             );
@@ -69,6 +73,8 @@ const cartSlice = createSlice({
         },
         // tính tổng tiền trong giỏ hàng
         calculateTotal(state) {
+            if (!Array.isArray(state.items)) return 0;
+
             state.total = state.items.reduce((total, product) => {
                 return total + product.price;
             }, 0);

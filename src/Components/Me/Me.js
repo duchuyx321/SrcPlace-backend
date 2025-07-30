@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import classNames from "classnames/bind";
-import { IoCashOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import { IoIosLogOut } from "react-icons/io";
 import { CiShoppingBasket } from "react-icons/ci";
 import { useMemo, useState } from "react";
@@ -11,18 +11,13 @@ import Image from "~/Components/Image";
 import Menu from "~/Components/Wrapper/Menu";
 import AuthService from "~/Services/AuthService";
 import { selectDataUserAuth } from "~/Features/Auth/AuthSelect";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
 const MenuItemUser = [
     {
-        key: "wallet",
-        to: "/wallet",
-        name: "Lịch Sử Nạp Tiền",
-        icon: <IoCashOutline />,
-    },
-    {
-        key: "payment",
-        to: "/payment",
+        key: "payments",
+        to: config.routers.payments,
         name: "Lịch sử Mua Hàng",
         icon: <CiShoppingBasket />,
     },
@@ -31,7 +26,7 @@ const MenuItemAdmin = [{}, {}];
 const MenuItemPublic = [
     {
         key: "setting",
-        to: "/setting",
+        to: config.routers.setting,
         name: "Cài Đặt",
         icon: <IoSettingsOutline />,
     },
@@ -46,14 +41,11 @@ function Me() {
     const [isHide, setIsHide] = useState(false);
     const dataAuth = useSelector(selectDataUserAuth);
     const MenuItem = useMemo(() => {
-        if (dataAuth.role) {
-            if (dataAuth.role === "User") {
-                return [...MenuItemUser, ...MenuItemPublic];
-            } else if (dataAuth.role === "Admin") {
-                return [...MenuItemAdmin, ...MenuItemPublic];
-            }
+        if (dataAuth.role === "Admin") {
+            return [...MenuItemAdmin, ...MenuItemPublic];
         }
-    }, []);
+        return [...MenuItemUser, ...MenuItemPublic];
+    }, [dataAuth]);
 
     const handleOnHide = () => {
         setIsHide(!isHide);

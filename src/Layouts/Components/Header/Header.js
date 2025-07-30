@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import style from "./Header.module.scss";

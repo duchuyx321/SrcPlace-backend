@@ -41,10 +41,10 @@ function DetailProduct() {
     );
     const [resultProduct, setResultProduct] = useState({});
     const [isActionAddToCart, setIsActionAddToCart] = useState(false);
-    const handleFetchApiProduct = async () => {
+    const handleFetchApiProduct = async (slug) => {
         const result = await PublicService.getProjectFlowSlug(slug);
-        if (result.error) {
-            setResultProduct(result || {});
+        if (!result.error) {
+            setResultProduct(result);
         }
     };
     //  kiểm tra đăng nhập
@@ -52,7 +52,7 @@ function DetailProduct() {
         const AccessToken = localStorage.getItem("AccessToken");
         setIsLogin(!!AccessToken);
         //  call api lấy các thông tin của đơn hàng
-        handleFetchApiProduct();
+        handleFetchApiProduct(slug);
     }, []);
     const handleFetchApiAddToCart = async (project_ID) => {
         await CartService.addToCart(project_ID);
@@ -69,9 +69,6 @@ function DetailProduct() {
                     duration: 5000,
                 })
             );
-            // cal api thêm vào giỏ hàng
-            handleFetchApiAddToCart();
-            handleAddToCart();
             dispatch(calculateTotal());
         } else if (cartResult.status === 403) {
             dispatch(
@@ -86,10 +83,17 @@ function DetailProduct() {
         dispatch(clearMessage());
     }, [cartResult]);
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         // kiểm tra thêm điểu kiện đã đăng nhập hay chưa
         if (!isLogin) {
             // hiển thị thông báo chưa đăng nhập
+            dispatch(
+                addToast({
+                    type: "warning",
+                    title: "Vui lòng đăng nhập để thêm vào giỏ hàng!",
+                    duration: 3000,
+                })
+            );
             return;
         }
         setIsActionAddToCart(true);
@@ -97,6 +101,8 @@ function DetailProduct() {
             setIsActionAddToCart(false);
         }, 500); // 500ms = thời gian animation
         //  thêm vào trong reducer
+        await handleFetchApiAddToCart(resultProduct._id);
+        console.log(resultProduct);
         dispatch(
             addToCart({
                 _id: resultProduct._id,
@@ -138,7 +144,10 @@ function DetailProduct() {
         },
         {
             type: "image",
-            url: resultProduct.thumbnail?.image_url || "",
+            url:
+                resultProduct.thumbnail?.image_url ||
+                resultProduct.image_url ||
+                "",
         },
     ];
     return (
@@ -160,14 +169,19 @@ function DetailProduct() {
                 </span>
                 <div className={cx("content")}>
                     <h3 className={cx("title")}>
-                        [ 2025 ] Đồ Án Website Bán Điện Thoại | ReactJs - NodeJS
-                        - MongoDB - Gemini
+                        {resultProduct.title ||
+                            `[ 2025 ] Đồ Án Website Bán Điện Thoại | ReactJs - NodeJS
+                        - MongoDB - Gemini`}
                     </h3>
                     <div className={cx("metaInfo")}>
                         <MetaInfo />
                     </div>
                     <div className={cx("price")}>
-                        <p>{formatNumberPrice({ number: 500000 })}</p>
+                        <p>
+                            {formatNumberPrice({
+                                number: resultProduct.price || 500000,
+                            })}
+                        </p>
                     </div>
                     <div className={cx("support")}>
                         <Support />

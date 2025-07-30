@@ -12,7 +12,7 @@ function useInitUserAuth() {
         if (!resultAuth.error) {
             dispatch(
                 adDataAuth({
-                    user: resultAuth.data,
+                    user: resultAuth,
                 })
             );
         }
@@ -30,9 +30,12 @@ function useInitUserAuth() {
                 dispatch(updateAuthStatus(parsedAuthStatus));
             }
             // call api lấy thông người dùng
-            if (localStorage.getItem("AccessToken")) {
-                fetchApiGetProfile();
-            }
+            setTimeout(() => {
+                const token = localStorage.getItem("AccessToken");
+                if (token) {
+                    fetchApiGetProfile();
+                }
+            }, 300);
         } catch {}
     }, []);
 }

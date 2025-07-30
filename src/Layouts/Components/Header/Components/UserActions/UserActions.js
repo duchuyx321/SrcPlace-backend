@@ -1,6 +1,4 @@
-import PropTypes from "prop-types";
 import classNames from "classnames/bind";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import style from "./UserActions.module.scss";
