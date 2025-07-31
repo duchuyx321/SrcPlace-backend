@@ -7,6 +7,7 @@ const card = require('./card');
 const payment = require('./payment');
 const notification = require('./notification');
 const checkout = require('./checkout');
+const download = require('./download');
 
 // [User]
 router.use('/me', me);
@@ -15,4 +16,5 @@ router.use('/card', card);
 router.use('/payment', payment);
 router.use('/notification', notification);
 router.use('/checkout', checkout);
+router.use('/download', download);
 module.exports = router;

@@ -34,7 +34,6 @@ class ApiController {
                 transId,
                 signature,
             } = req.body;
-            console.log(req.body);
             // lấy accessKey và secretKey
             let status = resultCode === 0 ? 'success' : 'failed';
             //  thêm vào payment và cập nhật order
@@ -71,9 +70,9 @@ class ApiController {
                 throw new Error('fake Payment!');
             }
             const signatureServer = newSignatureCallback({
-                accessKey: 'F8BBA842ECF85', //decryptAccessKey,
-                secretKey: 'K951B6PE1waDMi640xX08PD3vg6EkVlz', //decryptSecretKey,
-                partnerCode: 'MOMO', //decryptPartnerCode,
+                accessKey: decryptAccessKey,
+                secretKey: decryptSecretKey,
+                partnerCode: decryptPartnerCode,
                 amount,
                 extraData,
                 message,
@@ -111,7 +110,9 @@ class ApiController {
                     .json({ error: resultAddPaymentInOrder.error });
             }
             // gửi thông báo đến cho người dùng
-            return res.status(200).json({ data: { message: 'successful!' } });
+            return res
+                .status(200)
+                .json({ data: { order_ID, payment_ID: payment._id, status } });
         } catch (error) {
             await OrderServices.destroyOrder({ order_IDs });
             console.log(error);
