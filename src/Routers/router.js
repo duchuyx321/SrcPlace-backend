@@ -25,15 +25,7 @@ const PublicRouters = [
     },
     { path: config.routers.products, component: Products },
     { path: config.routers.notFound, component: NotFund, layout: null },
-    // userRouter
-    {
-        path: config.routers.checkout,
-        component: Checkout,
-        layout: DetailLayout,
-        props: {
-            isNoSidebarMobile: true,
-        },
-    },
+    // useRoute
     {
         path: config.routers.payments,
         component: Payments,
@@ -42,6 +34,18 @@ const PublicRouters = [
             isNoSidebarMobile: true,
         },
     },
+];
+// các router cần cần đăng nhập
+const UserRouters = [
+    {
+        path: config.routers.checkout,
+        component: Checkout,
+        layout: DetailLayout,
+        props: {
+            isNoSidebarMobile: true,
+        },
+    },
+
     {
         path: config.routers.downloads,
         component: Downloads,
@@ -52,8 +56,6 @@ const PublicRouters = [
         },
     },
 ];
-// các router cần cần đăng nhập
-const UserRouters = [];
 // Các router cần đăng nhập và có role Admin
 const AdminRouters = [];
 

@@ -70,3 +70,45 @@ export const DELETE = async (path, option = {}) => {
     const response = await httpRequest.delete(path, option);
     return response.data;
 };
+
+export const downloadProjectFile = async (path) => {
+    try {
+        const token = localStorage.getItem("AccessToken");
+        if (!token) return;
+
+        const res = await axios.get(
+            `${process.env.REACT_APP_URL_SERVER}${path}`,
+            {
+                withCredentials: true,
+                responseType: "blob",
+                headers: {
+                    Authorization: token,
+                },
+            }
+        );
+
+        // Lấy tên file từ header Content-Disposition
+        const disposition = res.headers["content-disposition"];
+        let filename = "project.rar"; // fallback name
+        if (disposition && disposition.includes("filename=")) {
+            const match = disposition.match(
+                /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+            );
+            if (match && match[1]) {
+                filename = match[1].replace(/['"]/g, ""); // bỏ dấu ngoặc kép nếu có
+            }
+        }
+
+        // Tạo link tải
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    } catch (err) {
+        console.error("Lỗi khi tải file:", err.message);
+        throw err;
+    }
+};

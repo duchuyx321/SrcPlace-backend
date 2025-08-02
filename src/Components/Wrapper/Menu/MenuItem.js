@@ -10,18 +10,25 @@ import Button from "~/Components/Button";
 const cx = classNames.bind(style);
 
 function MenuItem({ item, isImage = false, isPrice = false, onChange }) {
-    const link = item.to || (item.slug ? `/${item.slug}` : "");
+    console.log(item.to);
+    let link = null;
+    if (item.to) {
+        link = item.to;
+    } else if (item.slug) {
+        link = `/product/${item.slug}`;
+    }
     const imageSrc = item.thumbnail?.image_url || item.image_url || "";
     const title = item.name || item.title || "";
     const price = item.price;
     const icon = item.icon || "";
+
     return (
         <div className={cx("menuItem")}>
             <Button
-                to={link}
+                to={link ? link : undefined}
                 leftIcon={icon}
                 className={cx("item")}
-                onClick={() => onChange(item)}
+                onClick={onChange ? () => onChange(item) : undefined}
                 large
             >
                 <div className={cx("item_wrapper")}>

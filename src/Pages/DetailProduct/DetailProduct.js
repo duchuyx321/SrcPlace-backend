@@ -28,6 +28,7 @@ import MediaPreview from "./Components/MediaPreview";
 import CartService from "~/Services/CartService";
 import PublicService from "~/Services/PublicService";
 import CheckoutService from "~/Services/CheckoutService";
+import config from "~/Config";
 
 const cx = classNames.bind(style);
 
@@ -44,6 +45,8 @@ function DetailProduct() {
     const handleFetchApiProduct = async (slug) => {
         const result = await PublicService.getProjectFlowSlug(slug);
         if (!result.error) {
+            navigate(config.routers.notFound);
+        } else {
             setResultProduct(result);
         }
     };
@@ -59,7 +62,7 @@ function DetailProduct() {
     };
     //  trả kết quả
     useEffect(() => {
-        if (!cartResult) return;
+        if (!cartResult || !cartResult.status || !cartResult.message) return;
 
         if (cartResult.status === 200) {
             dispatch(

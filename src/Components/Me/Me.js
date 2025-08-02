@@ -22,7 +22,7 @@ const MenuItemUser = [
         icon: <CiShoppingBasket />,
     },
 ];
-const MenuItemAdmin = [{}, {}];
+const MenuItemAdmin = [];
 const MenuItemPublic = [
     {
         key: "setting",
@@ -42,7 +42,7 @@ function Me() {
     const dataAuth = useSelector(selectDataUserAuth);
     const MenuItem = useMemo(() => {
         if (dataAuth.role === "Admin") {
-            return [...MenuItemAdmin, ...MenuItemPublic];
+            return [...MenuItemAdmin, ...MenuItemUser, ...MenuItemPublic];
         }
         return [...MenuItemUser, ...MenuItemPublic];
     }, [dataAuth]);

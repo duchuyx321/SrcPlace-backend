@@ -4,9 +4,9 @@ const routers = {
     checkout: "/checkout", // thanh toán
     payments: "/payments",
     setting: "/setting",
-    downloads: "/downloads",
+    downloads: "/downloads/:order_ID",
     viewCart: "/view-cart",
-    detailProduct: "/:slug",
+    detailProduct: "/product/:slug",
     home: "/",
     notFound: "*", // page 404
 };

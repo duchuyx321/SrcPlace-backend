@@ -67,6 +67,33 @@
         margin-top: 8px;
     }
 }
+.is_Download {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    & > p {
+        margin: 4px 0;
+    }
+}
+.wrapper_btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & > button {
+        z-index: 105;
+        border-radius: 24px;
+        width: 15rem;
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        box-shadow: 0 0 8px #535353;
+        & > h3 {
+            font-size: 13px;
+        }
+        & > span {
+            font-size: 20px;
+        }
+    }
+}
 .is_action {
     transform: scale(105%);
     box-shadow: 0px 0px 4px cyan;
