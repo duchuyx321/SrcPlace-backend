@@ -120,6 +120,7 @@ class DriverService {
         const originalname =
             resultFileDriver.data?.name.split('_')[4] || 'Unknown_File.rar';
         const fileName = `SrcPlace_${order_ID}_${originalname}`;
+        const userFriendlyName = `SrcPlace_${originalname}`;
         // tải file về
         const result = await driver.files.get(
             {
@@ -156,7 +157,7 @@ class DriverService {
                 reject(new Error('Write File Error: ' + err.message));
             });
         });
-        return filePath;
+        return { filePath, userFriendlyName };
     }
     async deleteFileToDriver(source_ID) {
         try {
@@ -179,7 +180,7 @@ class DriverService {
             return { status: 200, message: 'Xóa file thành công' };
         } catch (error) {
             console.log(error);
-            return { status: 501, message: error.message };
+            return { status: 500, message: error.message };
         }
     }
 }
