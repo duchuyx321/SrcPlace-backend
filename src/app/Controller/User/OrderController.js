@@ -51,14 +51,12 @@ class OrderController {
             const { page, limit } = req.query;
             const { user_ID } = req.user;
             const skip = (parseInt(page) - 1) * parseInt(limit);
-            const orders = await Orders.find({ user_ID })
+            // lấy tất cả các order của user trong hệ thống
+            const allOrders = await Orders.find({ user_ID })
                 .select('status project_IDs createdAt')
-                .skip(skip)
-                .limit(limit)
                 .sort({ createdAt: -1 });
             const projectOrderMap = new Map();
-
-            orders.forEach((order) => {
+            allOrders.forEach((order) => {
                 order.project_IDs.forEach((projectID) => {
                     projectOrderMap.set(projectID.toString(), {
                         status: order.status,
@@ -66,21 +64,42 @@ class OrderController {
                     });
                 });
             });
-            const project_IDs = orders.map((item) => [...item.project_IDs]);
-            const projects = await Projects.find({
-                _id: { $in: project_IDs },
-            }).select('title slug price');
+            const allProjectIDs = Array.from(projectOrderMap.keys());
+            const paginatedProjectIDs = allProjectIDs.slice(
+                skip,
+                skip + parseInt(limit),
+            );
+            const [projects = [], downloadList = []] = await Promise.all([
+                Projects.find({ _id: { $in: paginatedProjectIDs } }).select(
+                    'title slug thumbnail price',
+                ),
+                Downloads.find({
+                    user_ID,
+                    project_ID: { $in: paginatedProjectIDs },
+                }).select('project_ID'),
+            ]);
+            const projectsDownload_IDs = downloadList.map((item) =>
+                item.project_ID.toString(),
+            );
             const projectsAndWithProp = projects.map((project) => {
-                const orderInfo = projectOrderMap.get(project._id.toString());
-
+                const projectID = project._id.toString();
+                const orderInfo = projectOrderMap.get(projectID);
+                const isDownloaded = projectsDownload_IDs.includes(projectID);
                 return {
                     ...project.toObject(),
                     status: orderInfo?.status || null,
+                    isDownloaded,
                     createdAt: orderInfo?.createdAt || null,
                 };
             });
-            return res.status(200).json({ data: projectsAndWithProp });
+
+            const maxPage = Math.ceil(allProjectIDs.length / parseInt(limit));
+
+            return res
+                .status(200)
+                .json({ data: { projects: projectsAndWithProp, maxPage } });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: error.message });
         }
     }

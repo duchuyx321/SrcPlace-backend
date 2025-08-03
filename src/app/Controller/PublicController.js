@@ -27,29 +27,36 @@ class PublicController {
             const limit = parseInt(req.query.limit) || 4;
             const page = parseInt(req.query.page) || 1;
             const skip = (page - 1) * limit;
-            const [paidProjects, freeProjects] = await Promise.all([
-                Projects.find({
-                    price: { $gt: 0 },
-                    is_proved: true,
-                    is_published: true,
-                })
-                    .select('title price image_url slug sold')
-                    .skip(skip)
-                    .limit(limit)
-                    .sort({ sold: -1 }),
-                Projects.find({
-                    price: { $eq: 0 },
-                    is_proved: true,
-                    is_published: true,
-                })
-                    .select('title price image_url slug sold')
-                    .skip(skip)
-                    .limit(limit)
-                    .sort({ sold: -1 }),
-            ]);
-            return res
-                .status(200)
-                .json({ data: { paidProjects, freeProjects } });
+            const [maxProjects, paidProjects, freeProjects] = await Promise.all(
+                [
+                    Projects.countDocuments(),
+                    Projects.find({
+                        price: { $gt: 0 },
+                        is_proved: true,
+                        is_published: true,
+                    })
+                        .select('title price image_url slug sold')
+                        .skip(skip)
+                        .limit(limit)
+                        .sort({ sold: -1 }),
+                    Projects.find({
+                        price: { $eq: 0 },
+                        is_proved: true,
+                        is_published: true,
+                    })
+                        .select('title price image_url slug sold')
+                        .skip(skip)
+                        .limit(limit)
+                        .sort({ sold: -1 }),
+                ],
+            );
+            return res.status(200).json({
+                data: {
+                    paidProjects,
+                    freeProjects,
+                    maxPage: Math.ceil(maxProjects / limit),
+                },
+            });
         } catch (error) {
             console.log(error.message);
             return res.status(500).json({ error: error.message });
