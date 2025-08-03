@@ -59,7 +59,7 @@ function Home() {
                 <div className={cx("container")}>
                     <ProductSessions
                         title="Top Dự Án Nỗi Bật"
-                        to={config.routers.products}
+                        to={`${config.routers.products}?page=1`}
                         products={resultProjectCharge}
                         is_animation
                     />

@@ -3,6 +3,12 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    &.isDark {
+        & > button,
+        > .current > button {
+            background-color: #333;
+        }
+    }
 }
 .btn_page {
     min-width: 5rem;

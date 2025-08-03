@@ -11,6 +11,7 @@ const defaultFunc = () => {};
 function Pagination({
     page = 1,
     maxPage = 10,
+    isDark = false,
     handleOnNextPage = defaultFunc,
 }) {
     const [current, setCurrent] = useState(page);
@@ -18,7 +19,7 @@ function Pagination({
         setCurrent(page);
     }, [page]);
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper", { isDark })}>
             <Button
                 outline
                 className={cx("btn_page", "btn_nextFull")}

@@ -11,6 +11,17 @@ class OrderService {
             return { error };
         }
     }
+    async getOrders({ page = 1, limit = 5 } = {}) {
+        try {
+            const result = await httpRequest.GET(
+                `user/order?page=${page}&limit=${limit}`
+            );
+            return result.data;
+        } catch (error) {
+            console.error(error);
+            return { error };
+        }
+    }
 }
 
 export default new OrderService();

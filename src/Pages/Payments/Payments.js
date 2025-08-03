@@ -1,8 +1,9 @@
 import classNames from "classnames/bind";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { Link, useSearchParams } from "react-router-dom";
 
 import style from "./Payments.module.scss";
 import Seo from "~/Components/Seo";
@@ -10,14 +11,42 @@ import { formatDay } from "~/Util/lib/formatDate";
 import Button from "~/Components/Button";
 import DownloadService from "~/Services/DownloadService";
 import { addToast } from "~/Features/Toast/toastSlice";
+import Image from "~/Components/Image";
+import Pagination from "~/Components/Pagination";
+import OrderService from "~/Services/OrderService";
 
 const cx = classNames.bind(style);
 
 function Payments() {
-    const [resultPayment, setResultPayment] = useState([1, 1, 1, 1]);
+    const [resultPayment, setResultPayment] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [maxPage, setMaxPage] = useState(1);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const currentPage = searchParams.get("page");
+
+    useEffect(() => {
+        const pageNumber = parseInt(currentPage);
+
+        if (!pageNumber || pageNumber < 1 || pageNumber > maxPage) {
+            navigate("/payments?page=1", { replace: true });
+            return;
+        }
+
+        setPage(pageNumber);
+        // call api
+        const fetchApi = async () => {
+            const result = await OrderService.getOrders({ page: pageNumber });
+            if (!result?.error) {
+                setResultPayment(result.projects);
+                setMaxPage(result.maxPage);
+            }
+        };
+        fetchApi();
+    }, [currentPage]);
     // handle button
     const handleOnClickDownloadItem = async (item) => {
         setIsLoading(true);
@@ -55,6 +84,10 @@ function Payments() {
             );
         }
     };
+    const handleOnNextPage = async (page) => {
+        setPage((prev) => page);
+        navigate(`/payments?page=${page}`, { replace: true });
+    };
     return (
         <>
             <Seo
@@ -74,9 +107,9 @@ function Payments() {
                     <table className={cx("table")}>
                         <thead className={cx("table_header")}>
                             <tr>
-                                <th>Tên sản phẩm</th>
+                                <th>Sản phẩm</th>
                                 <th>Ngày mua</th>
-                                <th>Trạng thái thanh toán</th>
+                                <th>thanh toán</th>
                                 <th>Trạng thái tải</th>
                                 <th>Hành động</th>
                             </tr>
@@ -84,8 +117,30 @@ function Payments() {
                         <tbody>
                             {resultPayment.map((item, index) => (
                                 <tr key={item._id || index}>
-                                    <td data-label="Tên sản phẩm">
-                                        {item.name || "Đồ án SrcPlace"}
+                                    <td
+                                        data-label="Sản phẩm"
+                                        className={cx("product_item")}
+                                    >
+                                        <Link
+                                            to={
+                                                item.slug
+                                                    ? `/product/${item.slug}`
+                                                    : null
+                                            }
+                                        >
+                                            <Image
+                                                src={
+                                                    item?.thumbnail
+                                                        ?.image_url || ""
+                                                }
+                                                alt={item?.slug || ""}
+                                            />
+                                            <span
+                                                className={cx("product_name")}
+                                            >
+                                                {item.name || "Đồ án SrcPlace "}
+                                            </span>
+                                        </Link>
                                     </td>
                                     <td data-label="Ngày mua">
                                         {formatDay(item.date)}
@@ -130,6 +185,14 @@ function Payments() {
                             ))}
                         </tbody>
                     </table>
+                </div>
+                <div className={cx("pages")}>
+                    <Pagination
+                        page={page}
+                        maxPage={maxPage}
+                        isDark
+                        handleOnNextPage={handleOnNextPage}
+                    />
                 </div>
             </div>
         </>

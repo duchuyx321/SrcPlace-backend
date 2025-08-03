@@ -1,18 +1,48 @@
 import classNames from "classnames/bind";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
 
 import style from "./Products.module.scss";
-import { useState } from "react";
 import ProductSessions from "~/Components/ProductSessions";
 import Pagination from "~/Components/Pagination";
+import PublicService from "~/Services/PublicService";
 
 const cx = classNames.bind(style);
 function Products() {
-    const [resultProducts, setResultProducts] = useState([
-        1, 2, 3, 4, 5, 6, 7, 8,
-    ]);
+    const [resultProducts, setResultProducts] = useState([]);
     const [page, setPage] = useState(1);
-    const handleOnNextPage = (num) => {
-        setPage(num);
+    const [maxPage, setMaxPage] = useState(1);
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+
+    const currentPage = searchParams.get("page");
+
+    useEffect(() => {
+        const pageNumber = parseInt(currentPage);
+
+        if (!pageNumber || pageNumber < 1 || pageNumber > maxPage) {
+            navigate("/product?page=1", { replace: true });
+            return;
+        }
+
+        setPage(pageNumber);
+        // call api
+        const fetchApi = async () => {
+            const result = await PublicService.getProject({
+                page: pageNumber,
+                limit: 8,
+            });
+            if (!result?.error) {
+                setResultProducts(result.projects);
+                setMaxPage(result.maxPage);
+            }
+        };
+        fetchApi();
+    }, [currentPage]);
+    const handleOnNextPage = async (page) => {
+        setPage((prev) => page);
+        navigate(`/product?page=${page}`, { replace: true });
     };
     return (
         <div className={cx("wrapper")}>

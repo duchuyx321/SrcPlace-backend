@@ -17,7 +17,7 @@ const cx = classNames.bind(style);
 const MenuItemUser = [
     {
         key: "payments",
-        to: config.routers.payments,
+        to: `${config.routers.payments}?page=1`,
         name: "Lịch sử Mua Hàng",
         icon: <CiShoppingBasket />,
     },

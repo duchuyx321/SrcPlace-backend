@@ -1,5 +1,8 @@
 // mobile < 740px
 @media screen and (max-width: 739px) {
+    div .wrapper {
+        padding: 8px;
+    }
     .table {
         min-width: unset;
         thead {
@@ -11,6 +14,11 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             padding: 8px;
+            & > a > .product_item {
+                & > img {
+                    width: 4rem;
+                }
+            }
         }
 
         td {
@@ -30,6 +38,23 @@
                 color: #555;
             }
         }
+    }
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    th {
+        display: none;
+    }
+
+    td {
+        position: relative;
+        padding-left: 50%;
     }
 }
 
@@ -66,17 +91,57 @@
             }
         }
     }
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+        display: block;
+    }
+
+    th {
+        display: none;
+    }
+
+    td {
+        position: relative;
+        padding-left: 50%;
+    }
 }
 // desktop >= 1024px
 @media only screen and (min-width: 1024px) and (max-width: 1399px) {
     .wrapper {
         .table {
             width: 95%;
+            th:nth-child(1) {
+                width: 30%;
+            }
+            th:nth-child(2),
+            th:nth-child(3),
+            th:nth-child(4),
+            th:nth-child(5) {
+                width: 10%;
+            }
         }
     }
 }
 //  > 1400
 @media only screen and (min-width: 1400px) {
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        th:nth-child(1) {
+            width: 40%;
+        }
+        th:nth-child(2),
+        th:nth-child(3),
+        th:nth-child(4),
+        th:nth-child(5) {
+            width: 10%;
+        }
+    }
 }
 
 .wrapper {
@@ -106,8 +171,13 @@
 }
 
 .table_wrapper {
-    overflow-x: auto;
     width: 100%;
+    overflow-x: auto;
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+    }
 }
 
 .table {
@@ -174,4 +244,25 @@
 .downloaded {
     background-color: #f0f9ff;
     color: #007bff;
+}
+.product_item {
+    & > a {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        & > img {
+            width: 6rem;
+            flex-shrink: 0;
+        }
+        .product_name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+    }
+}
+.pages {
+    width: 100%;
+    margin-top: 16px;
 }
