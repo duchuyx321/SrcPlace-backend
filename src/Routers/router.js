@@ -7,8 +7,10 @@ import Products from "~/Pages/Products";
 import Checkout from "~/Pages/Checkout";
 import Payments from "~/Pages/Payments";
 import Downloads from "~/Pages/Downloads";
+import Setting from "~/Pages/Setting/Setting";
 // Layout
 import DetailLayout from "~/Layouts/DetailLayout";
+import EmptyLayout from "~/Layouts/EmptyLayout";
 // các router không cần đăng nhập
 const PublicRouters = [
     {
@@ -32,6 +34,15 @@ const PublicRouters = [
         layout: DetailLayout,
         props: {
             isNoSidebarMobile: true,
+        },
+    },
+    {
+        path: config.routers.setting,
+        component: Setting,
+        layout: EmptyLayout,
+        props: {
+            isNoSidebarMobile: true,
+            isNoSidebar: true,
         },
     },
 ];

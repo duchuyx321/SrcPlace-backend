@@ -34,7 +34,7 @@ function Products() {
                 limit: 8,
             });
             if (!result?.error) {
-                setResultProducts(result.projects);
+                setResultProducts(result.paidProjects);
                 setMaxPage(result.maxPage);
             }
         };

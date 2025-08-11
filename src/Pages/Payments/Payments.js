@@ -17,6 +17,12 @@ import OrderService from "~/Services/OrderService";
 
 const cx = classNames.bind(style);
 
+const statusVi = {
+    pending : "Đang xử lý",
+    paid: "Thành công",
+    cancelled: "Thất bại"
+}
+
 function Payments() {
     const [resultPayment, setResultPayment] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -148,11 +154,11 @@ function Payments() {
                                     <td
                                         data-label="Thanh toán"
                                         className={cx({
-                                            [item.paymentStatus]:
-                                                item.paymentStatus,
+                                            [item.status]:
+                                                item.status,
                                         })}
                                     >
-                                        {item.paymentStatus || "Chờ thanh toán"}
+                                        {statusVi[item.status] || "Thất bại"}
                                     </td>
                                     <td
                                         data-label="Trạng thái tải"
@@ -161,7 +167,7 @@ function Payments() {
                                             downloaded: item.downloaded,
                                         })}
                                     >
-                                        {item.downloaded
+                                        {item.isDownloaded
                                             ? "Đã tải"
                                             : "Chưa tải"}
                                     </td>

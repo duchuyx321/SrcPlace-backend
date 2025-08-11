@@ -45,9 +45,9 @@ function DetailProduct() {
     const handleFetchApiProduct = async (slug) => {
         const result = await PublicService.getProjectFlowSlug(slug);
         if (!result.error) {
-            navigate(config.routers.notFound);
-        } else {
             setResultProduct(result);
+        } else {
+            navigate(config.routers.notFound);
         }
     };
     //  kiểm tra đăng nhập
