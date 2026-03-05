@@ -1,0 +1,4 @@
+/node_modules
+/src/Assets/Downloads/*
+/src/Assets/Sources/*
+.env
