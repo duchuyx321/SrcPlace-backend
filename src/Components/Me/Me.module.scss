@@ -1,0 +1,58 @@
+.wrapper {
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--powder-blue);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > img {
+        width: 100%;
+        height: 100%;
+    }
+}
+.wrapper_header {
+    min-width: 90%;
+    padding: 0;
+}
+.header {
+    box-shadow: 0 6px 16px rgba(156, 173, 206, 0.5),
+        0 3px 6px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+    border-radius: 8px;
+    &:hover {
+        background: #e6edf8;
+        box-shadow: 0 8px 20px rgba(156, 173, 206, 0.5),
+            0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+    z-index: 100;
+}
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #c2b9b9;
+    & > img {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+    }
+}
+.wallet {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-top: 4px;
+}
+.wallet_title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+}
+.wallet_price {
+}

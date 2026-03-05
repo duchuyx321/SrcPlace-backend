@@ -1,0 +1,170 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 16px;
+        & > .right {
+            width: 100%;
+        }
+        & > .action_paymentMethod {
+            width: 100%;
+        }
+    }
+    .general {
+        margin-bottom: 16px;
+        justify-content: center;
+    }
+    .action_payment {
+        flex-direction: column;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .general {
+        margin-right: 16px;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1025px) {
+    .general {
+        margin-right: 16px;
+    }
+}
+.wrapper {
+    width: 100%;
+    background-color: var(--white-color);
+    display: flex;
+}
+.action_voucher {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    margin-bottom: 8px;
+}
+.voucher_summer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 8px;
+}
+.voucher_apply {
+    max-width: 320px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #9292924a;
+    padding: 8px;
+    &:hover {
+        background-color: #9292923d;
+    }
+}
+.voucher_discount {
+    color: #f86120;
+}
+.btn_removeVoucher {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f86120;
+    font-size: 24px;
+    cursor: pointer;
+    &:hover {
+        color: #f8612098;
+    }
+}
+.voucher {
+    min-width: 10rem;
+    max-width: 32rem;
+    display: flex;
+    gap: 8px;
+    & > .input_voucher {
+        margin-top: 0;
+    }
+}
+.btn_applyVoucher {
+}
+.action_payment {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+}
+.general {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--black-color);
+    & > span {
+        color: #f86120;
+    }
+    & > p {
+        font-size: 13px;
+    }
+    & > .total {
+        color: #898989cf;
+        position: relative;
+        &::before {
+            content: "";
+            width: 100%;
+            height: 1px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            background-color: #f86120;
+        }
+    }
+}
+.btn_buy {
+    background-color: #f34f4f;
+    &:hover {
+        background-color: #f568684a;
+    }
+}
+.action_paymentMethod {
+    width: 45%;
+    min-height: 100px;
+}
+.paymentMethods {
+    width: 100%;
+}
+.methods {
+    width: 100%;
+    max-width: 22rem;
+}
+.method {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8px;
+    padding-left: 8px;
+    gap: 8px;
+}
+.checkbox {
+    width: 18px;
+    height: 18px;
+    transition: accent-color 0.3s ease-in-out;
+    &:checked {
+        accent-color: #f34f4f;
+    }
+}
+.name_method {
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    & > img {
+        height: 100%;
+        border-radius: 2px;
+    }
+}
+.right {
+    width: 55%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}

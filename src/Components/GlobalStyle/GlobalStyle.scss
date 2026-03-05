@@ -1,0 +1,97 @@
+@import "normalize.css";
+
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root {
+    --black-color: #1d1d1d;
+    --white-color: #fff;
+    --outer-space: #464f51;
+    --lavender-color: #d1cfe2;
+    --powder-blue: #a4bcec;
+    --sky-blue: #7ec4cf;
+    --icterine-color: #edf060;
+}
+
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+// Scrollbar CSS
+html *::-webkit-scrollbar {
+    border-radius: 0;
+    width: 8px;
+}
+
+html *::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+html *::-webkit-scrollbar-track {
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    width: 100%;
+    height: 100%;
+    font-size: 1.6rem;
+    font-family: "Be Vietnam Pro", sans-serif;
+}
+li,
+button,
+a,
+input {
+    border: none;
+    outline: none;
+    text-decoration: none;
+    color: var(--black-color);
+    background: none;
+    list-style: none;
+}
+.tippy-box[data-theme="google"] {
+    background-color: #34a853;
+    color: white;
+}
+.tippy-box[data-theme~="google"] > .tippy-arrow::before {
+    color: #34a853; /* Đổi màu mũi tên */
+}
+
+.tippy-box[data-theme="facebook"] {
+    background-color: #1877f2;
+    color: white;
+}
+.tippy-box[data-theme~="facebook"] > .tippy-arrow::before {
+    color: #1877f2; /* Đổi màu mũi tên */
+}
+@mixin modalWrapper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 103;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    overflow: hidden;
+}
+// responsive
+
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) and (max-width: 1399px) {
+}
+//  > 1400
+@media only screen and (min-width: 1400px) {
+}

@@ -1,0 +1,78 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        gap: 1rem;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .wrapper {
+        gap: 3rem;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        gap: 3rem;
+    }
+}
+.wrapper {
+    display: flex;
+    align-items: center;
+}
+.wrapper_event {
+    position: relative;
+    z-index: 99;
+    padding: 8px;
+    width: 4rem;
+    height: 4rem;
+    background-color: #dcdcdc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+}
+.isHidden {
+    background-color: var(--powder-blue);
+}
+.count {
+    position: absolute;
+    min-width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background-color: rgb(246, 7, 7);
+    color: var(--white-color);
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: -8px;
+    padding: 2px;
+    top: -2px;
+    z-index: 1;
+}
+.icon {
+    font-size: 2.2rem;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    color: var(--white-color);
+}
+.action {
+    width: 96%;
+    height: 60px;
+    position: fixed;
+    bottom: 3px;
+    left: 2px;
+    background-color: var(--white-color);
+    z-index: 103;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & > .btn_viewCart {
+        background-color: #fb7575;
+    }
+}

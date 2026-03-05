@@ -1,0 +1,75 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        & > iframe {
+            min-height: 20rem;
+        }
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .wrapper {
+        & > iframe {
+            min-height: 35rem;
+        }
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1025px) {
+    .wrapper {
+        & > iframe {
+            min-height: 38rem;
+        }
+    }
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    & > iframe {
+        width: 100%;
+        padding: 0;
+        outline: none;
+        border: none;
+        border-radius: 8px;
+        z-index: 20;
+    }
+    & > img {
+        width: 100%;
+        border-radius: 8px;
+    }
+}
+.arise {
+    width: 100%;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+.btn_arise {
+    width: 10rem;
+    height: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    position: relative;
+    & > img {
+        width: 100%;
+        height: 100%;
+    }
+}
+.iconVideo {
+    position: absolute;
+    font-size: 30px;
+    right: 0;
+    bottom: -10px;
+    z-index: 11;
+    color: var(--white-color);
+    transition: border-color 0.3s ease;
+}
+.active {
+    border: 1px solid #f68d42;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+}

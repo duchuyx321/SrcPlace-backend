@@ -1,0 +1,57 @@
+.wrapper {
+    position: absolute; // dùng relative nếu nó nằm trong modal hay container
+    width: 360px; // hoặc % tùy layout
+    height: 400px;
+    margin: 0 auto; // căn giữa theo chiều ngang
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    z-index: 106;
+    animation: fadeIn 0.3s ease;
+    &.fadeOut {
+        animation: fadeOut 0.3s forwards;
+    }
+}
+.cropImage {
+    width: 100%;
+    height: 70%; // để chừa chỗ cho thanh kéo bên dưới
+    position: relative;
+}
+.pullBar {
+    position: relative; // không cần absolute nếu không full màn
+    height: 14%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    input[type="range"] {
+        width: 80%;
+    }
+}
+.btn_crop {
+    position: absolute;
+    right: 24px;
+    bottom: 24px;
+}
+// animation
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

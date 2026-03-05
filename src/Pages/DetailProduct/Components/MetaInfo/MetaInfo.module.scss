@@ -1,0 +1,16 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+.metaItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    color: #ededed;
+    border-right: 1px solid #dcdcdc;
+}
+.metaItem:last-child {
+    border-right: none;
+}

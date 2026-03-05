@@ -1,0 +1,19 @@
+.wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 16px;
+    user-select: none;
+}
+.btn_other {
+    font-size: 5rem;
+}
+.Google:hover {
+    color: #34a853;
+}
+
+.Facebook:hover {
+    color: #4285f4;
+}

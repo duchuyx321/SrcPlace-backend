@@ -1,0 +1,64 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        width: 100%;
+    }
+    .action {
+        flex-direction: column;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1024px) {
+    .wrapper {
+        width: 100%;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1025px) {
+    .wrapper {
+        width: 80%;
+    }
+}
+.wrapper {
+    height: 100%;
+    min-height: 75vh;
+    background-color: var(--white-color);
+    border-radius: 8px;
+    border: 3px dotted #fbb0b0;
+    box-shadow: 0 0 8px #4e4e4e99;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.header {
+    flex-shrink: 0; // không co lại
+    width: 100%;
+}
+.item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f1efef9e;
+}
+.product {
+    flex: 0 0 65%;
+    color: var(--black-color);
+}
+.products {
+    flex: 1; // chiếm toàn bộ phần còn lại
+    overflow: hidden;
+    overflow-y: overlay;
+    color: var(--black-color);
+}
+.amount {
+    color: var(--black-color);
+}
+.action {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
