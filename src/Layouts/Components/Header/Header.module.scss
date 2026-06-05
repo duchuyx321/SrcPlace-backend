@@ -1,0 +1,74 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .wrapper {
+        padding: 0.9rem;
+    }
+    .nameTitle {
+        display: none;
+    }
+    button.btn_register {
+        display: none;
+    }
+    .search {
+        max-width: 17.6rem;
+    }
+    .right_wrapper {
+        gap: 1rem;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .wrapper {
+        padding: 1.6rem 3.4rem;
+    }
+    .nameTitle {
+        display: none;
+    }
+    .search {
+        max-width: 42.6rem;
+    }
+    .right_wrapper {
+        gap: 3rem;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) {
+    .wrapper {
+        padding: 1.6rem 3.4rem;
+    }
+    .search {
+        max-width: 42.6rem;
+    }
+    .right_wrapper {
+        gap: 3rem;
+    }
+}
+.wrapper {
+    min-width: 90%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(120 118 118 / 40%);
+    user-select: none;
+}
+.left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.comeHome {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white-color);
+}
+.logo {
+    height: 5rem;
+}
+.right_wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

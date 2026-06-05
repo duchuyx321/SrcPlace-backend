@@ -1,0 +1,41 @@
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+    .container {
+        flex-direction: column;
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+    .auth {
+        border-top: 1px solid #ccccccb7;
+    }
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) {
+    .auth {
+        border-top: 1px solid #ccccccb7;
+    }
+}
+
+.wrapper {
+    width: 100%;
+    min-height: 20rem;
+    padding: 16px 6rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #4b4b4b45;
+    border-top: 1px solid #eaeaea;
+}
+.container {
+    flex: 1;
+    color: var(--white-color);
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 8px;
+}
+.auth {
+    width: 100%;
+    color: var(--white-color);
+    text-align: center;
+    padding-top: 16px;
+}

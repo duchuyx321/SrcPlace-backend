@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    & > .btn_back {
+        margin: 0;
+    }
+}
+.btn_back {
+    padding: 8px;
+    transition: color 0.25s ease-in-out;
+    color: var(--white-color);
+    border-right: 1px solid #afafafcd;
+    & > h3 {
+        font-size: 16px;
+    }
+    & > span {
+        font-size: 16px;
+    }
+    &:hover {
+        color: rgba(254, 44, 84, 0.5);
+    }
+    &:active {
+        color: rgba(254, 44, 84, 0.5);
+    }
+}

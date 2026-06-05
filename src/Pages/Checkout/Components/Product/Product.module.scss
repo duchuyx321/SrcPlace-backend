@@ -1,0 +1,64 @@
+// responsive
+
+// mobile < 740px
+@media only screen and (max-width: 739px) {
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 740px) and (max-width: 1023px) {
+}
+// desktop >= 1024px
+@media only screen and (min-width: 1024px) and (max-width: 1399px) {
+}
+//  > 1400
+@media only screen and (min-width: 1400px) {
+}
+
+.wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #f1efef9e;
+    gap: 16px;
+}
+
+.product {
+    width: 65%;
+    height: 4rem;
+    padding-left: 8px;
+    color: var(--black-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    & > img {
+        height: 100%;
+        border-radius: 2px;
+        object-fit: cover;
+    }
+}
+
+.title {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2; // giới hạn 2 dòng
+    overflow: hidden;
+    text-overflow: ellipsis;
+    h3 {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.price {
+    color: #f86120;
+}

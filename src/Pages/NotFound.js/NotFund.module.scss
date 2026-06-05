@@ -1,0 +1,87 @@
+// responsive
+
+// mobile < 740px
+@media only screen and (max-width: 799px) {
+    .page_notFund {
+        width: 100%;
+        height: auto;
+        & > h2 {
+            font-size: 3.4rem;
+        }
+        & > .container {
+            & > h3 {
+                font-size: 2.4rem;
+            }
+            & > p {
+                font-size: 1.3rem;
+            }
+        }
+    }
+}
+// tablet (740px - 1024px)
+@media only screen and (min-width: 801px) {
+    .page_notFund {
+        width: 80rem;
+        height: 60rem;
+        & > h2 {
+            font-size: 4.4rem;
+        }
+        & > .container {
+            & > h3 {
+                font-size: 2.8rem;
+            }
+            & > p {
+                font-size: 1.8rem;
+            }
+        }
+    }
+}
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.page_notFund {
+    position: relative;
+    background: url("../../Assets/images/noFund.gif");
+    min-width: 100%;
+    min-height: 60rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    & > h2 {
+        width: 100%;
+        position: absolute;
+        top: 15%;
+        text-align: center;
+    }
+    & > .container {
+        width: 100%;
+        position: absolute;
+        bottom: 0%;
+        text-align: center;
+        line-height: 1.5;
+
+        & > div {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+    }
+}
+.btn_home {
+    width: 15rem;
+    height: 5rem;
+    background-color: var(--icterine-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--black-color);
+    font-weight: 500;
+    border-radius: 8px;
+}

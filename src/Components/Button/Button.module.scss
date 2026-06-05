@@ -1,0 +1,64 @@
+.wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 12rem;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 9px 1.6rem;
+    border-radius: 4px;
+    font-weight: 700;
+    color: var(--white-color);
+    cursor: pointer;
+    border: 1px solid transparent;
+    user-select: none;
+    + .wrapper {
+        margin-left: 1.6rem;
+    }
+    &.disable {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+}
+.icon + .title,
+.title + .icon {
+    margin-left: 8px;
+}
+
+.icon,
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.icon {
+    font-size: 2.8rem;
+}
+.title {
+    font-size: 18px;
+    width: 100%;
+}
+// Button sizes
+.small {
+    min-width: 8rem;
+}
+
+.large {
+    padding: 1.4rem 1.6rem;
+    min-width: 14rem;
+}
+// Button types
+.primary {
+    background-color: var(--sky-blue);
+}
+.outline {
+    color: var(--sky-blue);
+    border: 1px solid var(--sky-blue);
+}
+.text {
+    .text {
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

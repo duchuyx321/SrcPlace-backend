@@ -1,0 +1,117 @@
+@import "../GlobalStyle/GlobalStyle.scss";
+.wrapper {
+    @include modalWrapper;
+    background-color: #33333340;
+    animation: fadeIn 0.3s ease;
+    &.fadeOut {
+        animation: fadeOut 0.3s forwards;
+    }
+}
+.container {
+    width: 340px;
+    min-height: 390px;
+    background-color: var(--white-color);
+    position: relative;
+    padding: 24px 24px 8px;
+    border-radius: 4px;
+}
+.title {
+    width: 100%;
+    text-align: center;
+    & > h3 {
+        font-size: 18px;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #33333340;
+    }
+    & > p {
+        font-size: 13px;
+        color: #33333391;
+        line-height: 1.5;
+    }
+}
+.action {
+    width: calc(100% - 48px);
+    position: absolute;
+    bottom: 8px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.selectMethod {
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+}
+.otpInput {
+    margin-top: 24px;
+    & > p {
+        margin-bottom: 8px;
+    }
+}
+.method {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    & > button {
+        border-color: #f18b9b;
+        color: #f18b9b;
+        position: relative;
+        & > span {
+            position: absolute;
+            font-size: 13px;
+            right: 8px;
+            top: 8px;
+            color: #f18b9b;
+            transition: transform 0.3s ease-in-out;
+        }
+    }
+}
+.btn_active {
+    &:focus > span {
+        transform: rotate(180deg);
+    }
+}
+.btn_method {
+    width: 10rem;
+    border: 1px solid #33333340;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 1px;
+}
+.action_out {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.btn_submit {
+    width: 100%;
+}
+.btn_resendCode {
+    width: 100%;
+}
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,80 @@
+.wrapper {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.box_input {
+    width: 100%;
+    height: 48px;
+    position: relative;
+    border: 1px solid #dededede;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.25s ease-in-out;
+    & > input {
+        width: 100%;
+        height: 100%;
+        outline: none;
+        padding: 0 4rem 0 2.4rem;
+        caret-color: #1a74f3;
+    }
+    & > label {
+        position: absolute;
+        left: 24px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7d7d7d;
+        transition: top 0.3s ease, font-size 0.3s ease, color 0.3s ease,
+            background-color 0.3s ease;
+        pointer-events: none;
+    }
+    // khi bấm vào hoặc khi có nội dung
+    & > input:focus ~ label,
+    & > input:not(:placeholder-shown) + label {
+        top: -2px;
+        font-size: 13px;
+        padding: 0 4px;
+        color: #1a74f3d4;
+        background-color: var(--white-color);
+    }
+    & > input:focus ~ label {
+        color: #1a74f3d4 !important;
+    }
+    &:has(input:focus) {
+        border-color: #4992f8;
+    }
+}
+.warning {
+    border-color: #f5e855;
+    & > label {
+        color: #fee900 !important;
+    }
+}
+.error {
+    border-color: #f7525277;
+    & > label {
+        color: #f44949 !important;
+    }
+}
+.success {
+    border-color: #67f63c;
+    & > label {
+        color: #34f304 !important;
+    }
+}
+.btn_eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    color: #666;
+    cursor: pointer;
+}
+.isRequired {
+    color: #f44949;
+    margin-left: 4px;
+}
